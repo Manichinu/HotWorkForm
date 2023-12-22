@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "hot-work-client-side-solution",
+    "id": "bf724fda-187a-47fa-9872-cd4ea1077166",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.18.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "HotWork description"
+      },
+      "longDescription": {
+        "default": "HotWork description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "hot-work Feature",
+        "description": "The feature that activates elements of the hot-work solution.",
+        "id": "f2a33f57-9ec2-444b-bdb9-9d3e4ca17bb4",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/hot-work.sppkg"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "hot-work-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/hotWork/HotWorkWebPart.js",
+          "manifest": "./src/webparts/hotWork/HotWorkWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "HotWorkWebPartStrings": "lib/webparts/hotWork/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
+  }
+}
