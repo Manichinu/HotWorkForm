@@ -58,6 +58,15 @@ export default class HotWork extends React.Component<IHotWorkProps, HotWorkDashb
   public componentDidMount() {
     this.GetCurrentLoggedUser();
     this.getPermitRequestDetails();
+    const searchParams = new URLSearchParams(window.location.search);
+    const hasSessionID = searchParams.has("SessionID");
+    if (hasSessionID) {
+      this.setState({
+        ShowDashboard: false,
+        ShowNewForm: false,
+        ShowViewForm: true
+      })
+    }
   }
   private async GetCurrentLoggedUser() {
     await NewWeb.currentUser.get().then((user: any) => {

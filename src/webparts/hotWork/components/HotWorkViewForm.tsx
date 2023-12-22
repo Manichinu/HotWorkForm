@@ -7,6 +7,7 @@ import * as $ from 'jquery';
 import Swal from 'sweetalert2';
 import { Web } from '@pnp/sp/presets/all';
 import * as moment from "moment";
+import HotWork from './HotWork';
 // import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
 
 
@@ -27,6 +28,7 @@ export interface HotWorkState {
     ApproverID: any;
     ShowDashboard: boolean;
     ShowViewForm: boolean;
+    Section1Table: any[];
 }
 
 export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotWorkState, {}> {
@@ -40,7 +42,8 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             CurrentUserID: 0,
             ApproverID: 0,
             ShowDashboard: false,
-            ShowViewForm: true
+            ShowViewForm: true,
+            Section1Table: []
         };
         SessionID = this.props.itemId;
         // NewWeb = Web(this.props.siteurl);
@@ -56,6 +59,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         }
 
         this.GetCurrentLoggedUser();
+        this.getFilesFromLibrary();
         $(".cancel_btn").on('click', function () {
             location.reload();
         })
@@ -91,6 +95,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
                 $('input, input[type="radio"],textarea,button').prop({ readonly: true, disabled: true });
             }
         }).then(() => {
+            this.getTableDetails(WFRequestID);
             this.getApproverListDetails();
         })
 
@@ -568,13 +573,19 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         var handler = this;
         $("#worksite_tbody tr").each(function (i, row) {
             var fileInput: any = $(this).find(".certificate_files");
-            var selectedFile: any = fileInput[0].files[0];
-            var FileName = selectedFile.name;
-            var Category = $(this).find(".worksite").text();
-            var Required = $(this).find(".required").prop('checked');
-            var FileNo = $(this).find(".file_no").val();
-            console.log(Required)
-            handler.uploadCertificatesFile(FileName, selectedFile, Category, Required, FileNo, i);
+            if (fileInput && fileInput[0]) {
+                var FileLength: any = fileInput[0].files.length;
+                console.log(FileLength);
+                if (FileLength != 0) {
+                    var selectedFile: any = fileInput[0].files[0];
+                    var FileName = selectedFile.name;
+                    var Category = $(this).find(".worksite").text();
+                    var Required = $(this).find(".required").prop('checked');
+                    var FileNo = $(this).find(".file_no").val();
+                    console.log(Required)
+                    handler.uploadCertificatesFile(FileName, selectedFile, Category, Required, FileNo, i);
+                }
+            }
         });
     }
     private async uploadCertificatesFile(FileName: string, selectedFile: any, Category: string, Required: boolean, FileNo: any, OrderNo: number) {
@@ -600,13 +611,19 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         var handler = this;
         $("#worksite_Attachments_tbody tr").each(function (i, row) {
             var fileInput: any = $(this).find(".attach_files");
-            var selectedFile: any = fileInput[0].files[0];
-            var FileName = selectedFile.name;
-            var Category = $(this).find(".worksitess").text();
-            var Required = $(this).find(".attch_req").prop('checked');
-            var FileNo = $(this).find(".attch_no").val();
-            console.log(Required)
-            handler.uploadAttachmentsFile(FileName, selectedFile, Category, Required, FileNo, i);
+            if (fileInput && fileInput[0]) {
+                var FileLength: any = fileInput[0].files.length;
+                console.log(FileLength);
+                if (FileLength != 0) {
+                    var selectedFile: any = fileInput[0].files[0];
+                    var FileName = selectedFile.name;
+                    var Category = $(this).find(".worksitess").text();
+                    var Required = $(this).find(".attch_req").prop('checked');
+                    var FileNo = $(this).find(".attch_no").val();
+                    console.log(Required)
+                    handler.uploadAttachmentsFile(FileName, selectedFile, Category, Required, FileNo, i);
+                }
+            }
         });
     }
     private async uploadAttachmentsFile(FileName: string, selectedFile: any, Category: string, Required: boolean, FileNo: any, OrderNo: number) {
@@ -687,6 +704,28 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             ShowViewForm: false
         })
     }
+    public async getFilesFromLibrary() {
+        await NewWeb.lists.getByTitle('Worksite Control Attachments')
+            .items
+            .select('*')
+            .filter(`RequestID eq '${this.props.itemId}'`)
+            .expand("File")
+            .get()
+            .then((files) => {
+                console.log("File", files)
+            })
+    }
+    public getTableDetails(Requestid: string) {
+        NewWeb.lists.getByTitle("Work Permit Request Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
+            console.log(items);
+            if (items.length !== 0) {
+                this.setState({
+                    Section1Table: items
+                })
+            }
+        });
+    }
+
 
     public render(): React.ReactElement<IHotWorkProps> {
         SPComponentLoader.loadCss(`${this.props.siteurl}/SiteAssets/AlQasimiForms/css/style.css?v=1.4`);
@@ -732,7 +771,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
                                     <div className="header_form">
                                         <div onClick={() => this.gotToDashboard()}>
                                             <a href="#" className='tooltip-back'>
-                                                <img /* data-toggle="tooltip" title="back" */ src={`${this.props.siteurl}/SiteAssets/AlQasimiForms/img/next.svg`} /> <span className='tooltiptext-back'>back</span>
+                                                <img src={`${this.props.siteurl}/SiteAssets/AlQasimiForms/img/next.svg`} /> <span className='tooltiptext-back'>back</span>
                                             </a>
                                         </div>
                                         <h2>HOT WORK PERMIT</h2>
@@ -939,12 +978,26 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
                                                             </tr>
                                                         </thead>
                                                         <tbody id="work_permit_tbody">
-                                                            <tr>
-                                                                <td><input type='text' id='Work_permit_name' /></td>
-                                                                <td><input type='text' id='Work_permit_company' /></td>
-                                                                <td><input type='text' id='Work_permit_position' /></td>
-                                                                <td><input type='datetime-local' id='Work_permit_date' /></td>
-                                                            </tr>
+                                                            {!this.state.Section1Table &&
+                                                                <tr>
+                                                                    <td><input type='text' id='Work_permit_name' /></td>
+                                                                    <td><input type='text' id='Work_permit_company' /></td>
+                                                                    <td><input type='text' id='Work_permit_position' /></td>
+                                                                    <td><input type='datetime-local' id='Work_permit_date' /></td>
+                                                                </tr>
+                                                            }
+                                                            {this.state.Section1Table && this.state.Section1Table.map((item) => {
+                                                                return (
+                                                                    <>
+                                                                        <tr>
+                                                                            <td><input type='text' id='Work_permit_name' readOnly value={item.Title} /></td>
+                                                                            <td><input type='text' id='Work_permit_company' readOnly value={item.Company} /></td>
+                                                                            <td><input type='text' id='Work_permit_position' readOnly value={item.Position} /></td>
+                                                                            <td><input type='datetime-local' id='Work_permit_date' readOnly value={item.Date} /></td>
+                                                                        </tr>
+                                                                    </>
+                                                                )
+                                                            })}
                                                         </tbody>
                                                         <tfoot>
                                                             <tr className='final-row'>
@@ -2028,6 +2081,14 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
           // defaultSelectedUsers={this.state.defaultPicker}
           /> */}
                     </div>
+                }
+                {
+                    this.state.ShowDashboard == true &&
+                    <HotWork
+                        itemId={0}
+                        description={""}
+                        context={this.props.context}
+                        siteurl={this.props.siteurl} isDarkTheme={false} environmentMessage={''} hasTeamsContext={false} userDisplayName={''} />
                 }
 
             </>
