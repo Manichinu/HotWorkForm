@@ -46,6 +46,15 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         // NewWeb = Web(this.props.siteurl);
     }
     public componentDidMount() {
+        const searchParams = new URLSearchParams(window.location.search);
+        const hasSessionID = searchParams.has("SessionID");
+        if (hasSessionID) {
+            SessionID = searchParams.get("SessionID");
+            console.log(SessionID);
+        } else {
+            console.log(SessionID);
+        }
+
         this.GetCurrentLoggedUser();
         $(".cancel_btn").on('click', function () {
             location.reload();
@@ -64,17 +73,18 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
                 })
                 this.getPermitRequestTransaction(WFRequestID)
                 if (this.state.CurrentUserID == items[0].AssignedToId) {
-                    $('input, input[type="radio"],textarea,button').prop({ readonly: true, disabled: true });
-                    setTimeout(() => {
-                        $(`.section${Level} input, .section${Level} input[type="radio"],.section${Level} textarea,.section${Level} button`).prop({ readonly: false, disabled: false });
-                    }, 500)
+                    if (Level != 8 && items[0].Status != "Approved") {
+                        $('input, input[type="radio"],textarea,button').prop({ readonly: true, disabled: true });
+                        setTimeout(() => {
+                            $(`.section${Level} input, .section${Level} input[type="radio"],.section${Level} textarea,.section${Level} button`).prop({ readonly: false, disabled: false });
+                        }, 500)
+                    } else {
+                        this.setState({
+                            currentPage: 1
+                        })
+                        $('input, input[type="radio"],textarea,button').prop({ readonly: true, disabled: true });
+                    }
                 } else {
-                    $('input, input[type="radio"],textarea,button').prop({ readonly: true, disabled: true });
-                }
-                if (Level == 8) {
-                    this.setState({
-                        currentPage: 1
-                    })
                     $('input, input[type="radio"],textarea,button').prop({ readonly: true, disabled: true });
                 }
             } else {
@@ -107,6 +117,45 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         NewWeb.lists.getByTitle("Permit Request Transaction").items.filter(`RequestID eq '${Requestid}'`).get().then((items) => {
             console.log(items);
             UniqueID = items[0].ID
+            $("#work_nature").val(items[0].NatureofWork);
+            $("#work_title").val(items[0].WorkTitle);
+            $("#start_date").val(items[0].StartDate);
+            $("#end_date").val(items[0].EndDate);
+            $("#equipment_description").val(items[0].EquipmentDescription);
+            $("#hazardous_description").val(items[0].HazardousAreaclassification);
+            $("#work_description").val(items[0].DescriptionofWork);
+            $("#tools").val(items[0].Toolstobeused);
+            $("#source_ignition").val(items[0].SourceofIgnition);
+            $("#hazardous_materials").val(items[0].HazardousMaterialsInvolved);
+            $("#job_performer").val(items[0].JobPerformer);
+            $("#section").val(items[0].Section);
+            $("#name").val(items[0].Name);
+            $("#no_of_workers").val(items[0].PlannedNoofWorkers);
+            items[0].Contractor == true ? $("#contractor1").prop("checked", true) : $("#contractor2").prop("checked", true);
+            items[0].WorkPlanning == true ? $("#planned1").prop("checked", true) : $("#planned2").prop("checked", true);
+            items[0].JSA == true ? $("#L2").prop("checked", true) : $("#fra").prop("checked", true);
+            items[0].RemoteFieldOperation == true ? $("#rfo1").prop("checked", true) : $("#rfo2").prop("checked", true);
+            items[0].PlannedSIMOPS == true ? $("#ops1").prop("checked", true) : $("#ops2").prop("checked", true);
+            items[0].PAWorksitepresence == true ? $("#pa1").prop("checked", true) : $("#pa2").prop("checked", true);
+            $("#precaution").val(items[0].SpecialPrecautions);
+            $("#pa_validity").val(items[0].PAValidity);
+            $("#pa_note").val(items[0].PANote);
+            items[0].ZeroEnergyDemonstration == true ? $("#energy1").prop("checked", true) : $("#energy2").prop("checked", true);
+            items[0].AuthorizationDelegation == true ? $("#delegation1").prop("checked", true) : $("#delegation2").prop("checked", true);
+            $("#permit_validity").val(items[0].PermitValidity);
+            $("#permit_note").val(items[0].PermitNote);
+            $("#permit_valid_from").val(items[0].PermitValidFrom);
+            $("#permit_valid_till").val(items[0].PermitValidTill);
+            items[0].PRWorksite == true ? $("#worksite1").prop("checked", true) : $("#worksite2").prop("checked", true);
+            items[0].PRHousekeeping == true ? $("#housekeeping1").prop("checked", true) : $("#housekeeping2").prop("checked", true);
+            items[0].PREquipmentLeft == true ? $("#equipment1").prop("checked", true) : $("#equipment2").prop("checked", true);
+            items[0].PREquipmentReady == true ? $("#service1").prop("checked", true) : $("#service2").prop("checked", true);
+            items[0].PRWorkComplete == true ? $("#work1").prop("checked", true) : $("#work2").prop("checked", true);
+            items[0].PRPermitCancelled == true ? $("#permit1").prop("checked", true) : $("#permit2").prop("checked", true);
+            items[0].PCWorksite == true ? $("#worksites1").prop("checked", true) : $("#worksites2").prop("checked", true);
+            items[0].PCHousekeeping == true ? $("#housekeepings1").prop("checked", true) : $("#housekeepings2").prop("checked", true);
+            items[0].PCEquipmentLeft == true ? $("#equipments1").prop("checked", true) : $("#equipments2").prop("checked", true);
+            $("#permit_no").val(items[0].PCPermitNo)
         });
     }
     private async GetCurrentLoggedUser() {

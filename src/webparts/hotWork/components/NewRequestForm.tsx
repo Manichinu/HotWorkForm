@@ -290,7 +290,7 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
             Contractor: Contractor,
             WorkPlanning: WorkPlanning,
             RequestID: RequestID,
-            Status: "In Progress"
+            Status: "Pending"
         }).then(() => {
             Swal.fire('Submitted successfully!', '', 'success').then(() => {
                 location.reload();
