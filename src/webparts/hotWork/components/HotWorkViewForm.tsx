@@ -17,7 +17,8 @@ var UniqueID: any;
 var WFRequestID: any;
 var WFItemID: any;
 var Level: any;
-var SessionID: any
+var SessionID: any;
+var WFStatus: any;
 
 export interface HotWorkState {
     currentPage: number;
@@ -59,7 +60,6 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         }
 
         this.GetCurrentLoggedUser();
-        this.getFilesFromLibrary();
         $(".cancel_btn").on('click', function () {
             location.reload();
         })
@@ -72,22 +72,21 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
                 WFRequestID = items[0].RequestID;
                 WFItemID = items[0].ID;
                 RequestID = items[0].RequestID;
+                WFStatus = items[0].Status;
                 this.setState({
                     currentPage: Level
                 })
                 this.getPermitRequestTransaction(WFRequestID)
                 if (this.state.CurrentUserID == items[0].AssignedToId) {
-                    if (Level != 8 && items[0].Status != "Approved") {
-                        $('input, input[type="radio"],textarea,button').prop({ readonly: true, disabled: true });
-                        setTimeout(() => {
-                            $(`.section${Level} input, .section${Level} input[type="radio"],.section${Level} textarea,.section${Level} button`).prop({ readonly: false, disabled: false });
-                        }, 500)
-                    } else {
+                    $('input, input[type="radio"],textarea,button').prop({ readonly: true, disabled: true });
+                    $(`.section${Level} input, .section${Level} input[type="radio"],.section${Level} textarea,.section${Level} button`).prop({ readonly: false, disabled: false });
+                    if (Level == 8 && items[0].Status == "Approved") {
                         this.setState({
                             currentPage: 1
                         })
                         $('input, input[type="radio"],textarea,button').prop({ readonly: true, disabled: true });
                     }
+
                 } else {
                     $('input, input[type="radio"],textarea,button').prop({ readonly: true, disabled: true });
                 }
@@ -97,6 +96,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         }).then(() => {
             this.getTableDetails(WFRequestID);
             this.getApproverListDetails();
+            this.getFilesFromLibrary();
         })
 
     }
@@ -121,7 +121,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
     public getPermitRequestTransaction(Requestid: any) {
         NewWeb.lists.getByTitle("Permit Request Transaction").items.filter(`RequestID eq '${Requestid}'`).get().then((items) => {
             console.log(items);
-            UniqueID = items[0].ID
+            UniqueID = items[0].ID;
             $("#work_nature").val(items[0].NatureofWork);
             $("#work_title").val(items[0].WorkTitle);
             $("#start_date").val(items[0].StartDate);
@@ -161,6 +161,12 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             items[0].PCHousekeeping == true ? $("#housekeepings1").prop("checked", true) : $("#housekeepings2").prop("checked", true);
             items[0].PCEquipmentLeft == true ? $("#equipments1").prop("checked", true) : $("#equipments2").prop("checked", true);
             $("#permit_no").val(items[0].PCPermitNo)
+        }).then(() => {
+            if (Level != 8 && WFStatus != "Approved") {
+                for (var i = Level; i < 9; i++) {
+                    $(".section" + i + " input[type='radio']").prop("checked", false);
+                }
+            }
         });
     }
     private async GetCurrentLoggedUser() {
@@ -708,20 +714,202 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         await NewWeb.lists.getByTitle('Worksite Control Attachments')
             .items
             .select('*')
-            .filter(`RequestID eq '${this.props.itemId}'`)
+            .filter(`RequestID eq '${SessionID}'`)
+            .orderBy("OrderNo", true)
             .expand("File")
             .get()
             .then((files) => {
-                console.log("File", files)
+                if (files.length != 0) {
+                    $("#worksite_tbody").empty();
+                    $("#worksite_Attachments_tbody").empty();
+                    for (var i = 0; i < files.length; i++) {
+                        if (files[i].FileType == "Certificates") {
+                            $("#worksite_tbody").append(`<tr>
+                            <td><p className='worksite'>${files[i].Category}</p></td>
+                            <td><input type='checkbox' disabled className='required' ${files[i].Required == true ? 'checked' : ''} /></td>
+                            <td><input type='text' readonly className='file_no' value='${files[i].No}' /></td>
+                            <td><a href='${files[i].File.ServerRelativeUrl}' target='_blank'>${files[i].File.Name}</a></td>
+                            </tr>`)
+                        } else {
+                            $("#worksite_Attachments_tbody").append(`<tr>
+                            <td><p className='worksitess'>${files[i].Category}</p></td>
+                            <td><input type='checkbox' disabled className='attch_req' ${files[i].Required == true ? 'checked' : ''} /></td>
+                            <td><input type='text' readonly className='attch_no' value='${files[i].No}' /></td>
+                            <td><a href='${files[i].File.ServerRelativeUrl}' target='_blank'>${files[i].File.Name}</a></td>
+                            </tr>`)
+                        }
+                    }
+                }
             })
     }
     public getTableDetails(Requestid: string) {
         NewWeb.lists.getByTitle("Work Permit Request Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
             console.log(items);
-            if (items.length !== 0) {
-                this.setState({
-                    Section1Table: items
-                })
+            if (items.length != 0) {
+                $("#work_permit_tbody").empty();
+                for (var i = 0; i < items.length; i++) {
+                    $("#work_permit_tbody").append(`<tr>
+                    <td><input type='text' id='work_permit_name' value='${items[i].Title}' readonly  /></td>
+                    <td><input type='text' id='work_permit_company' value='${items[i].Company}' readonly  /></td>
+                    <td><input type='text' id='work_permit_position' value='${items[i].Position}' readonly  /></td>
+                    <td><input type='datetime-local' id='work_permit_date' value='${items[i].Date}' readonly  /></td>
+                </tr>`)
+                }
+            }
+        });
+        NewWeb.lists.getByTitle("Permit Request Table Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
+            console.log(items);
+            if (items.length != 0) {
+                $("#permit_request_tbody").empty();
+                for (var m = 0; m < items.length; m++) {
+                    if (m == 0) {
+                        $("#permit_request_tbody").append(`<tr>
+                    <td><p className='location'>${items[m].Title}</p></td>
+                    <td><input readonly type='text' className='location_value' value='${items[m].LocationValue}' /></td>
+                    <td><p className='area'>${items[m].Area}</p></td>
+                    <td>R</td>
+                    <td><input disabled type='checkbox' className='process_r' ${items[m].ProcessR == true ? 'checked' : ''} /></td>
+                    <td>A</td>
+                    <td><input disabled type='checkbox' className='process_a' ${items[m].ProcessA == true ? 'checked' : ''} /></td>
+                    <td>Y</td>
+                    <td><input disabled type='checkbox' className='non_process_y' ${items[m].Non_x002d_ProcessY == true ? 'checked' : ''} /></td>
+                    <td>G</td>
+                    <td><input disabled type='checkbox' className='non_process_g' ${items[m].Non_x002d_ProcessG == true ? 'checked' : ''} /></td>
+                    <td>NC</td>
+                    <td><input disabled type='checkbox' className='non_process_nc' ${items[m].Non_x002d_ProcessNC == true ? 'checked' : ''} /></td>
+                </tr>`)
+                    } else {
+                        $("#permit_request_tbody").append(`<tr>
+                        <td><p className='location'>${items[m].Title}</p></td>
+                        <td><input readonly type='text' className='location_value' value='${items[m].LocationValue}' /></td>
+                        <td><p className='area'>${items[m].Area}</p></td>
+                        <td>0</td>
+                        <td><input disabled type='checkbox' className='process_r' ${items[m].ProcessR == true ? 'checked' : ''} /></td>
+                        <td>1</td>
+                        <td><input disabled type='checkbox' className='process_a' ${items[m].ProcessA == true ? 'checked' : ''} /></td>
+                        <td>2</td>
+                        <td><input disabled type='checkbox' className='non_process_y' ${items[m].Non_x002d_ProcessY == true ? 'checked' : ''} /></td>
+                        <td>G</td>
+                        <td><input disabled type='checkbox' className='non_process_g' ${items[m].Non_x002d_ProcessG == true ? 'checked' : ''} /></td>
+                        <td>NC</td>
+                        <td><input disabled type='checkbox' className='non_process_nc' ${items[m].Non_x002d_ProcessNC == true ? 'checked' : ''} /></td>
+                </tr>`)
+                    }
+                }
+            }
+        });
+        NewWeb.lists.getByTitle("WorkSite Control Table Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
+            if (items.length != 0) {
+                $("#worksite_permit_tbody").empty();
+                for (var a = 0; a < items.length; a++) {
+                    $("#worksite_permit_tbody").append(`<tr>
+                    <td><input type='text' id='worksite_permit_name' value='${items[a].Title}' readonly  /></td>
+                    <td><input type='text' id='worksite_permit_company' value='${items[a].Company}' readonly  /></td>
+                    <td><input type='text' id='worksite_permit_position' value='${items[a].Position}' readonly  /></td>
+                    <td><input type='datetime-local' id='worksite_permit_date' value='${items[a].Date}' readonly  /></td>
+                </tr>`)
+                }
+            }
+        });
+        NewWeb.lists.getByTitle("Permit Endorsement Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
+            if (items.length != 0) {
+                $("#permit_endorsement_tbody").empty();
+                for (var b = 0; b < items.length; b++) {
+                    $("#permit_endorsement_tbody").append(`<tr>
+                    <td><input type='text' id='permit_endorsement_name' value='${items[b].Title}' readonly  /></td>
+                    <td><input type='text' id='permit_endorsement_company' value='${items[b].Company}' readonly  /></td>
+                    <td><input type='text' id='permit_endorsement_position' value='${items[b].Position}' readonly  /></td>
+                    <td><input type='datetime-local' id='permit_endorsement_date' value='${items[b].Date}' readonly  /></td>
+                </tr>`)
+                }
+            }
+        });
+        NewWeb.lists.getByTitle("Permit Approval Table Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
+            if (items.length != 0) {
+                $("#permit_approval_tbody").empty();
+                for (var c = 0; c < items.length; c++) {
+                    $("#permit_approval_tbody").append(`<tr>
+                    <td><input type='text' id='permit_approval_name' value='${items[c].Title}' readonly  /></td>
+                    <td><input type='text' id='permit_approval_company' value='${items[c].Company}' readonly  /></td>
+                    <td><input type='text' id='permit_approval_position' value='${items[c].Position}' readonly  /></td>
+                    <td><input type='datetime-local' id='permit_approval_date' value='${items[c].Date}' readonly  /></td>
+                </tr>`)
+                }
+            }
+        });
+        NewWeb.lists.getByTitle("HSE Department Table Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
+            if (items.length != 0) {
+                $("#hse_department_tbody").empty();
+                for (var d = 0; d < items.length; d++) {
+                    $("#hse_department_tbody").append(`<tr>
+                    <td><input type='text' id='hse_department_name' value='${items[d].Title}' readonly  /></td>
+                    <td><input type='text' id='hse_department_company' value='${items[d].Company}' readonly  /></td>
+                    <td><input type='text' id='hse_department_position' value='${items[d].Position}' readonly  /></td>
+                    <td><input type='datetime-local' id='hse_department_date' value='${items[d].Date}' readonly  /></td>
+                </tr>`)
+                }
+            }
+        });
+        NewWeb.lists.getByTitle("Permit Authorization Table Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
+            if (items.length != 0) {
+                $("#permit_authorization_tbody").empty();
+                for (var e = 0; e < items.length; e++) {
+                    $("#permit_authorization_tbody").append(`<tr>
+                    <td><input type='text' id='permit_authorization_name' value='${items[e].Title}' readonly  /></td>
+                    <td><input type='text' id='permit_authorization_company' value='${items[e].Company}' readonly  /></td>
+                    <td><input type='text' id='permit_authorization_position' value='${items[e].Position}' readonly  /></td>
+                    <td><input type='datetime-local' id='permit_authorization_date' value='${items[e].Date}' readonly  /></td>
+                </tr>`)
+                }
+            }
+        });
+        NewWeb.lists.getByTitle("Worksite Issue Table Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
+            if (items.length != 0) {
+                $("#worksite_timings_tbody").empty();
+                for (var f = 0; f < items.length; f++) {
+                    $("#worksite_timings_tbody").append(`<tr>
+                    <td><input readonly value='${items[f].Date}' type='date' id='worksite_date' /></td>
+                    <td><input readonly value='${items[f].Shift}' type='text' id='shift' /></td>
+                    <td><input readonly value='${items[f].TimeFrom}' type='datetime-local' id='time_from' /></td>
+                    <td><input readonly value='${items[f].TimeTo}' type='datetime-local' id='time_to' /></td>
+                    <td><input readonly value='${items[f].AAName}' type='text' id='aa_name' /></td>
+                    <td><input readonly value='${items[f].PITime}' type='text' id='pi_time' /></td>
+                    <td><input readonly value='${items[f].PIName}' type='text' id='pi_name' /></td>
+                    <td><input readonly value='${items[f].JPTime}' type='text' id='jp_time' /></td>
+                    <td><input readonly value='${items[f].JPName}' type='text' id='jp_name' /></td>
+                    <td><input readonly value='${items[f].PermitJPTime}' type='text' id='permit_jp_time' /></td>
+                    <td><input readonly value='${items[f].PermitJPName}' type='text' id='permit_jp_name' /></td>
+                    <td><input readonly value='${items[f].PermitAATime}' type='text' id='permit_aa_time' /></td>
+                    <td><input readonly value='${items[f].PermitAAName}' type='text' id='permit_aa_name' /></td>
+                </tr>`)
+                }
+            }
+        });
+        NewWeb.lists.getByTitle("Permit Return Table Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
+            if (items.length != 0) {
+                $("#permit_return_tbody").empty();
+                for (var g = 0; g < items.length; g++) {
+                    $("#permit_return_tbody").append(`<tr>
+                    <td><input type='text' id='permit_return_name' value='${items[g].Title}' readonly  /></td>
+                    <td><input type='text' id='permit_return_company' value='${items[g].Company}' readonly  /></td>
+                    <td><input type='text' id='permit_return_position' value='${items[g].Position}' readonly  /></td>
+                    <td><input type='datetime-local' id='permit_return_date' value='${items[g].Date}' readonly  /></td>
+                </tr>`)
+                }
+            }
+        });
+        NewWeb.lists.getByTitle("Permit Closure Table Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
+            if (items.length != 0) {
+                $("#permit_closure_tbody").empty();
+                for (var h = 0; h < items.length; h++) {
+                    $("#permit_closure_tbody").append(`<tr>
+                    <td><p className='roles' value='${items[h].Role}' readonly>Permit Issuer</p></td>
+                    <td><input type='text' id='permit_closure_name' value='${items[h].Title}' readonly  /></td>
+                    <td><input type='text' id='permit_closure_company' value='${items[h].Company}' readonly  /></td>
+                    <td><input type='text' id='permit_closure_position' value='${items[h].Position}' readonly  /></td>
+                    <td><input type='datetime-local' id='permit_closure_date' value='${items[h].Date}' readonly  /></td>
+                </tr>`)
+                }
             }
         });
     }
@@ -978,26 +1166,12 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
                                                             </tr>
                                                         </thead>
                                                         <tbody id="work_permit_tbody">
-                                                            {!this.state.Section1Table &&
-                                                                <tr>
-                                                                    <td><input type='text' id='Work_permit_name' /></td>
-                                                                    <td><input type='text' id='Work_permit_company' /></td>
-                                                                    <td><input type='text' id='Work_permit_position' /></td>
-                                                                    <td><input type='datetime-local' id='Work_permit_date' /></td>
-                                                                </tr>
-                                                            }
-                                                            {this.state.Section1Table && this.state.Section1Table.map((item) => {
-                                                                return (
-                                                                    <>
-                                                                        <tr>
-                                                                            <td><input type='text' id='Work_permit_name' readOnly value={item.Title} /></td>
-                                                                            <td><input type='text' id='Work_permit_company' readOnly value={item.Company} /></td>
-                                                                            <td><input type='text' id='Work_permit_position' readOnly value={item.Position} /></td>
-                                                                            <td><input type='datetime-local' id='Work_permit_date' readOnly value={item.Date} /></td>
-                                                                        </tr>
-                                                                    </>
-                                                                )
-                                                            })}
+                                                            <tr>
+                                                                <td><input type='text' id='Work_permit_name' /></td>
+                                                                <td><input type='text' id='Work_permit_company' /></td>
+                                                                <td><input type='text' id='Work_permit_position' /></td>
+                                                                <td><input type='datetime-local' id='Work_permit_date' /></td>
+                                                            </tr>
                                                         </tbody>
                                                         <tfoot>
                                                             <tr className='final-row'>
