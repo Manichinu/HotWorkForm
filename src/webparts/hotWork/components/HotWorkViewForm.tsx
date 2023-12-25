@@ -298,7 +298,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
        `);
         }
     }
-    public saveDetails(CurrentSection: string) {
+    public async saveDetails(CurrentSection: string) {
         if (RequestID == "") {
             RequestID = "Session-" + moment().format("DDMMYYYYHHmmss");
         }
@@ -309,9 +309,37 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             this.saveWorkPermitRequestDetails();
         }
         if (CurrentSection == "Section2") {
-            this.saveWorkSiteControlDetails();
-            this.fileUploadForWorksiteControl();
-            this.fileUploadForWorksiteAttachments();
+            Swal.fire({
+                text: "Pending",
+                showConfirmButton: false
+            });
+
+            const asyncFunction1 = this.saveWorkSiteControlDetails();
+            const asyncFunction2 = this.fileUploadForWorksiteControl();
+            const asyncFunction3 = this.fileUploadForWorksiteAttachments();
+            const promises = [asyncFunction1, asyncFunction2, asyncFunction3];
+            const errors: any = [];
+            await Promise.all(promises.map(async (promise, index) => {
+                try {
+                    await promise;
+                } catch (error) {
+                    console.error(`Promise at index ${index} failed:`, error);
+                    errors.push({ index, error });
+                }
+            }));
+            if (errors.length === 0) {
+                setTimeout(() => {
+                    Swal.fire('Submitted successfully!', '', 'success').then(() => {
+                        location.reload();
+                    })
+                }, 1000)
+                console.log("All promises fulfilled successfully");
+            } else {
+                console.error("At least one promise was rejected:", errors);
+            }
+            // this.saveWorkSiteControlDetails();
+            // this.fileUploadForWorksiteControl();
+            // this.fileUploadForWorksiteAttachments();
         }
         if (CurrentSection == "Section3") {
             this.savePermitEndorsementDetails();
@@ -390,7 +418,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             });
         })
     }
-    public saveWorkSiteControlDetails() {
+    public async saveWorkSiteControlDetails(): Promise<void> {
         var itemsToCreate: any = [];
         var batch = NewWeb.createBatch();
         $("#worksite_permit_tbody tr").each(function (i, J) {
@@ -439,11 +467,11 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             PAWorksitepresence: PAWorksitePresence,
             SpecialPrecautions: $("#precaution").val(),
         }).then(() => {
-            setTimeout(() => {
-                Swal.fire('Submitted successfully!', '', 'success').then(() => {
-                    location.reload();
-                })
-            }, 200);
+            // setTimeout(() => {
+            //     Swal.fire('Submitted successfully!', '', 'success').then(() => {
+            //         location.reload();
+            //     })
+            // }, 200);
         })
     }
     public savePermitEndorsementDetails() {
@@ -808,7 +836,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
     //         throw error;
     //     }
     // }
-    public fileUploadForWorksiteControl() {
+    public async fileUploadForWorksiteControl(): Promise<void> {
         var itemsToCreate: any[] = [];
         var batch = NewWeb.createBatch();
         var handler = this;
@@ -905,7 +933,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
     //         throw error;
     //     }
     // }
-    public fileUploadForWorksiteAttachments() {
+    public async fileUploadForWorksiteAttachments(): Promise<void> {
         var itemsToCreate: any[] = [];
         var batch = NewWeb.createBatch();
         var handler = this;
