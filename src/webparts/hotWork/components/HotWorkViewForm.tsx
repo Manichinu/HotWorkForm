@@ -1308,7 +1308,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
                                 <div className="form_banner clearfix">
                                     <div className="header_form">
                                         <div>
-                                            <a href="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx" className='tooltip-back'>
+                                            <a href="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView" className='tooltip-back'>
                                                 <img src={`${this.props.siteurl}/SiteAssets/AlQasimiForms/img/next.svg`} /> <span className='tooltiptext-back'>back</span>
                                             </a>
                                         </div>
