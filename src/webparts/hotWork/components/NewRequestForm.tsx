@@ -701,8 +701,8 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                             <div className="container">
                                 <div className="form_banner clearfix">
                                     <div className="header_form">
-                                        <div onClick={() => this.gotToDashboard()}>
-                                            <a href="#" className='tooltip-back'>
+                                        <div>
+                                            <a href="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx" className='tooltip-back'>
                                                 <img /* data-toggle="tooltip" title="back" */ src={`${this.props.siteurl}/SiteAssets/AlQasimiForms/img/next.svg`} /> <span className='tooltiptext-back'>back</span>
                                             </a>
                                         </div>
