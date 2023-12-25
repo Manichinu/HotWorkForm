@@ -6,7 +6,7 @@ import { SPComponentLoader } from '@microsoft/sp-loader';
 // import * as $ from 'jquery';
 // import Swal from 'sweetalert2';
 import { Web } from '@pnp/sp/presets/all';
-// import * as moment from "moment";
+import * as moment from "moment";
 import 'datatables.net';
 import 'datatables.net-responsive';
 import 'datatables.net-buttons';
@@ -87,6 +87,7 @@ export default class HotWork extends React.Component<IHotWorkProps, HotWorkDashb
     var PendingStatus = 0;
     var ApprovedStatus = 0;
     NewWeb.lists.getByTitle("Permit Request Transaction").items.orderBy("Created", false).get().then((items) => {
+      console.log(items);
       for (let i = 0; i < items.length; i++) {
         if (items[i].Status == "Pending") {
           PendingStatus = PendingStatus + 1;
@@ -281,19 +282,22 @@ export default class HotWork extends React.Component<IHotWorkProps, HotWorkDashb
                             <th className="name"> Name </th>
                             <th className="dept-name"> Department </th>
                             <th className="Purpose"> Work Title</th>
+                            <th className="Purpose"> Request ID</th>
+                            <th className="Purpose">Requested On</th>
                             <th className="text-center status"> Status  </th>
                             <th className="text-center action_th"> Action  </th>
                           </tr>
                         </thead>
                         <tbody>
                           {this.state.DashboardItems && this.state.DashboardItems.map((item, i) => {
-
                             return [
                               <tr key={i}>
                                 <td>{i + 1}</td>
                                 <td>{item.Name}</td>
                                 <td>{item.Section}</td>
                                 <td>{item.WorkTitle}</td>
+                                <td>{item.RequestID}</td>
+                                <td>{moment(item.Created).format('DD/MM/YYYY h:mm A')}</td>
                                 <td className={`text-center status ${item.Status}`} >
                                   <span>{item.Status}</span>
                                 </td>
