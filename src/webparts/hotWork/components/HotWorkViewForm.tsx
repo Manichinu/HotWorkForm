@@ -439,9 +439,11 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             PAWorksitepresence: PAWorksitePresence,
             SpecialPrecautions: $("#precaution").val(),
         }).then(() => {
-            Swal.fire('Submitted successfully!', '', 'success').then(() => {
-                location.reload();
-            })
+            setTimeout(() => {
+                Swal.fire('Submitted successfully!', '', 'success').then(() => {
+                    location.reload();
+                })
+            }, 200);
         })
     }
     public savePermitEndorsementDetails() {
@@ -768,7 +770,47 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             });
         })
     }
+    // public fileUploadForWorksiteControl() {
+    //     var handler = this;
+    //     $("#worksite_tbody tr").each(function (i, row) {
+    //         var fileInput: any = $(this).find(".certificate_files");
+    //         if (fileInput && fileInput[0]) {
+    //             var FileLength: any = fileInput[0].files.length;
+    //             console.log(FileLength);
+    //             if (FileLength != 0) {
+    //                 var selectedFile: any = fileInput[0].files[0];
+    //                 var FileName = selectedFile.name;
+    //                 var Category = $(this).find(".worksite").text();
+    //                 var Required = $(this).find(".required").prop('checked');
+    //                 var FileNo = $(this).find(".file_no").val();
+    //                 console.log(Required)
+    //                 handler.uploadCertificatesFile(FileName, selectedFile, Category, Required, FileNo, i);
+    //             }
+    //         }
+    //     });
+    // }
+    // private async uploadCertificatesFile(FileName: string, selectedFile: any, Category: string, Required: boolean, FileNo: any, OrderNo: number) {
+    //     try {
+    //         const data = await NewWeb.getFolderByServerRelativeUrl(
+    //             this.props.context.pageContext.web.serverRelativeUrl + `/Worksite Control Attachments`
+    //         ).files.add(FileName, selectedFile, true);
+    //         const item = await data.file.getItem();
+    //         await item.update({
+    //             RequestID: RequestID,
+    //             Category: Category,
+    //             Required: Required,
+    //             No: FileNo,
+    //             OrderNo: OrderNo,
+    //             FileType: "Certificates"
+    //         });
+    //         console.log("Success");
+    //     } catch (error) {
+    //         throw error;
+    //     }
+    // }
     public fileUploadForWorksiteControl() {
+        var itemsToCreate: any[] = [];
+        var batch = NewWeb.createBatch();
         var handler = this;
         $("#worksite_tbody tr").each(function (i, row) {
             var fileInput: any = $(this).find(".certificate_files");
@@ -782,31 +824,90 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
                     var Required = $(this).find(".required").prop('checked');
                     var FileNo = $(this).find(".file_no").val();
                     console.log(Required)
-                    handler.uploadCertificatesFile(FileName, selectedFile, Category, Required, FileNo, i);
+
+                    var item = {
+                        FileName: FileName,
+                        SelectedFile: selectedFile,
+                        Category: Category,
+                        Required: Required,
+                        FileNo: FileNo,
+                        OrderNo: i
+                    };
+                    itemsToCreate.push({
+                        action: "create",
+                        item: item
+                    });
                 }
             }
         });
+
+        // Execute the batch operations for uploading certificates
+        itemsToCreate.forEach(async function (itemToCreate: any) {
+            if (itemToCreate.action === "create") {
+                const data = await NewWeb.getFolderByServerRelativeUrl(
+                    handler.props.context.pageContext.web.serverRelativeUrl + `/Worksite Control Attachments`
+                ).inBatch(batch).files.add(itemToCreate.item.FileName, itemToCreate.item.SelectedFile, true);
+
+                const fileItem = await data.file.getItem();
+                await fileItem.update({
+                    RequestID: RequestID,
+                    Category: itemToCreate.item.Category,
+                    Required: itemToCreate.item.Required,
+                    No: itemToCreate.item.FileNo,
+                    OrderNo: itemToCreate.item.OrderNo,
+                    FileType: "Certificates"
+                });
+            }
+        });
+
+        // Execute the batch
+        batch.execute().then(function () {
+            console.log("Batch operations completed successfully for uploading certificates");
+        }).catch(function (error: any) {
+            console.log("Error in batch operations for uploading certificates: " + error);
+        });
     }
-    private async uploadCertificatesFile(FileName: string, selectedFile: any, Category: string, Required: boolean, FileNo: any, OrderNo: number) {
-        try {
-            const data = await NewWeb.getFolderByServerRelativeUrl(
-                this.props.context.pageContext.web.serverRelativeUrl + `/Worksite Control Attachments`
-            ).files.add(FileName, selectedFile, true);
-            const item = await data.file.getItem();
-            await item.update({
-                RequestID: RequestID,
-                Category: Category,
-                Required: Required,
-                No: FileNo,
-                OrderNo: OrderNo,
-                FileType: "Certificates"
-            });
-            console.log("Success");
-        } catch (error) {
-            throw error;
-        }
-    }
+    // public fileUploadForWorksiteAttachments() {
+    //     var handler = this;
+    //     $("#worksite_Attachments_tbody tr").each(function (i, row) {
+    //         var fileInput: any = $(this).find(".attach_files");
+    //         if (fileInput && fileInput[0]) {
+    //             var FileLength: any = fileInput[0].files.length;
+    //             console.log(FileLength);
+    //             if (FileLength != 0) {
+    //                 var selectedFile: any = fileInput[0].files[0];
+    //                 var FileName = selectedFile.name;
+    //                 var Category = $(this).find(".worksitess").text();
+    //                 var Required = $(this).find(".attch_req").prop('checked');
+    //                 var FileNo = $(this).find(".attch_no").val();
+    //                 console.log(Required)
+    //                 handler.uploadAttachmentsFile(FileName, selectedFile, Category, Required, FileNo, i);
+    //             }
+    //         }
+    //     });
+    // }
+    // private async uploadAttachmentsFile(FileName: string, selectedFile: any, Category: string, Required: boolean, FileNo: any, OrderNo: number) {
+    //     try {
+    //         const data = await NewWeb.getFolderByServerRelativeUrl(
+    //             this.props.context.pageContext.web.serverRelativeUrl + `/Worksite Control Attachments`
+    //         ).files.add(FileName, selectedFile, true);
+    //         const item = await data.file.getItem();
+    //         await item.update({
+    //             RequestID: RequestID,
+    //             Category: Category,
+    //             Required: Required,
+    //             No: FileNo,
+    //             OrderNo: OrderNo,
+    //             FileType: "Attachments"
+    //         });
+    //         console.log("Success");
+    //     } catch (error) {
+    //         throw error;
+    //     }
+    // }
     public fileUploadForWorksiteAttachments() {
+        var itemsToCreate: any[] = [];
+        var batch = NewWeb.createBatch();
         var handler = this;
         $("#worksite_Attachments_tbody tr").each(function (i, row) {
             var fileInput: any = $(this).find(".attach_files");
@@ -820,29 +921,48 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
                     var Required = $(this).find(".attch_req").prop('checked');
                     var FileNo = $(this).find(".attch_no").val();
                     console.log(Required)
-                    handler.uploadAttachmentsFile(FileName, selectedFile, Category, Required, FileNo, i);
+
+                    var item = {
+                        FileName: FileName,
+                        SelectedFile: selectedFile,
+                        Category: Category,
+                        Required: Required,
+                        FileNo: FileNo,
+                        OrderNo: i
+                    };
+                    itemsToCreate.push({
+                        action: "create",
+                        item: item
+                    });
                 }
             }
         });
-    }
-    private async uploadAttachmentsFile(FileName: string, selectedFile: any, Category: string, Required: boolean, FileNo: any, OrderNo: number) {
-        try {
-            const data = await NewWeb.getFolderByServerRelativeUrl(
-                this.props.context.pageContext.web.serverRelativeUrl + `/Worksite Control Attachments`
-            ).files.add(FileName, selectedFile, true);
-            const item = await data.file.getItem();
-            await item.update({
-                RequestID: RequestID,
-                Category: Category,
-                Required: Required,
-                No: FileNo,
-                OrderNo: OrderNo,
-                FileType: "Attachments"
-            });
-            console.log("Success");
-        } catch (error) {
-            throw error;
-        }
+
+        // Execute the batch operations for uploading attachments
+        itemsToCreate.forEach(async function (itemToCreate: any) {
+            if (itemToCreate.action === "create") {
+                const data = await NewWeb.getFolderByServerRelativeUrl(
+                    handler.props.context.pageContext.web.serverRelativeUrl + `/Worksite Control Attachments`
+                ).inBatch(batch).files.add(itemToCreate.item.FileName, itemToCreate.item.SelectedFile, true);
+
+                const fileItem = await data.file.getItem();
+                await fileItem.update({
+                    RequestID: RequestID,
+                    Category: itemToCreate.item.Category,
+                    Required: itemToCreate.item.Required,
+                    No: itemToCreate.item.FileNo,
+                    OrderNo: itemToCreate.item.OrderNo,
+                    FileType: "Attachments"
+                });
+            }
+        });
+
+        // Execute the batch
+        batch.execute().then(function () {
+            console.log("Batch operations completed successfully for uploading attachments");
+        }).catch(function (error: any) {
+            console.log("Error in batch operations for uploading attachments: " + error);
+        });
     }
     public updateWorkFlowHistory() {
         if (WFItemID != undefined) {
