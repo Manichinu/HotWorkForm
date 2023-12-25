@@ -162,7 +162,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             items[0].PCEquipmentLeft == true ? $("#equipments1").prop("checked", true) : $("#equipments2").prop("checked", true);
             $("#permit_no").val(items[0].PCPermitNo)
         }).then(() => {
-            if (Level != 8 && WFStatus != "Approved") {
+            if (WFStatus == "In Progress") {
                 for (var i = Level; i < 9; i++) {
                     $(".section" + i + " input[type='radio']").prop("checked", false);
                 }
@@ -391,16 +391,43 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         })
     }
     public saveWorkSiteControlDetails() {
+        var itemsToCreate: any = [];
+        var batch = NewWeb.createBatch();
         $("#worksite_permit_tbody tr").each(function (i, J) {
-            NewWeb.lists.getByTitle("WorkSite Control Table Transaction").items.add({
-                Title: $(this).find('#worksite_permit_name').val(),
-                Company: $(this).find('#worksite_permit_company').val(),
-                Position: $(this).find('#worksite_permit_position').val(),
-                Date: $(this).find('#worksite_permit_date').val(),
-                RequestID: RequestID,
-                OrderNo: i
+            // NewWeb.lists.getByTitle("WorkSite Control Table Transaction").items.add({
+            var Name = $(this).find('#worksite_permit_name').val();
+            var Company = $(this).find('#worksite_permit_company').val();
+            var Position = $(this).find('#worksite_permit_position').val();
+            var Date = $(this).find('#worksite_permit_date').val();
+            var Sessionid = RequestID;
+            var OrderNo = i
+            var item = {
+                Title: Name,
+                Company: Company,
+                Position: Position,
+                Date: Date,
+                RequestID: Sessionid,
+                OrderNo: OrderNo
+            };
+            itemsToCreate.push({
+                action: "create",
+                item: item
             });
+            // });
         })
+        // Execute the batch operations
+        itemsToCreate.forEach(function (itemToCreate: any) {
+            if (itemToCreate.action === "create") {
+                NewWeb.lists.getByTitle("WorkSite Control Table Transaction").inBatch(batch).items.add(itemToCreate.item);
+            }
+        });
+
+        // Execute the batch
+        batch.execute().then(function () {
+            console.log("Batch operations completed successfully WorkSite Control Table Transaction");
+        }).catch(function (error: any) {
+            console.log("Error in batch operations WorkSite Control Table Transaction: " + error);
+        });
         var JSA = $("#L2").prop("checked");
         var RemoteFieldOperation = $("#rfo1").prop("checked");
         var PlannedSimops = $("#ops1").prop("checked");
@@ -418,33 +445,85 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         })
     }
     public savePermitEndorsementDetails() {
+        var itemsToCreate: any = [];
+        var batch = NewWeb.createBatch();
         $("#permit_endorsement_tbody tr").each(function (i, J) {
-            NewWeb.lists.getByTitle("Permit Endorsement Transaction").items.add({
-                Title: $(this).find('#permit_endorsement_name').val(),
-                Company: $(this).find('#permit_endorsement_company').val(),
-                Position: $(this).find('#permit_endorsement_position').val(),
-                Date: $(this).find('#permit_endorsement_date').val(),
-                RequestID: RequestID,
-                OrderNo: i
-            })
+            // NewWeb.lists.getByTitle("Permit Endorsement Transaction").items.add({
+            var Name = $(this).find('#permit_endorsement_name').val();
+            var Company = $(this).find('#permit_endorsement_company').val();
+            var Position = $(this).find('#permit_endorsement_position').val();
+            var Date = $(this).find('#permit_endorsement_date').val();
+            var Sessionid = RequestID;
+            var OrderNo = i
+            var item = {
+                Title: Name,
+                Company: Company,
+                Position: Position,
+                Date: Date,
+                RequestID: Sessionid,
+                OrderNo: OrderNo
+            };
+            itemsToCreate.push({
+                action: "create",
+                item: item
+            });
+            // })
         })
-        setTimeout(() => {
+        // Execute the batch operations
+        itemsToCreate.forEach(function (itemToCreate: any) {
+            if (itemToCreate.action === "create") {
+                NewWeb.lists.getByTitle("Permit Endorsement Transaction").inBatch(batch).items.add(itemToCreate.item);
+            }
+        });
+
+        // Execute the batch
+        batch.execute().then(function () {
             Swal.fire('Submitted successfully!', '', 'success').then(() => {
                 location.reload();
             })
-        }, 500)
+            console.log("Batch operations completed successfully Permit Endorsement Transaction");
+        }).catch(function (error: any) {
+            console.log("Error in batch operations Permit Endorsement Transaction: " + error);
+        });
     }
     public savePermitApprovalDetails() {
+        var itemsToCreate: any = [];
+        var batch = NewWeb.createBatch();
         $("#permit_approval_tbody tr").each(function (i, J) {
-            NewWeb.lists.getByTitle("Permit Approval Table Transaction").items.add({
-                Title: $(this).find('#permit_approval_name').val(),
-                Company: $(this).find('#permit_approval_company').val(),
-                Position: $(this).find('#permit_approval_position').val(),
-                Date: $(this).find('#permit_approval_date').val(),
-                RequestID: RequestID,
-                OrderNo: i
+            // NewWeb.lists.getByTitle("Permit Approval Table Transaction").items.add({
+            var Name = $(this).find('#permit_approval_name').val();
+            var Company = $(this).find('#permit_approval_company').val();
+            var Position = $(this).find('#permit_approval_position').val();
+            var Date = $(this).find('#permit_approval_date').val();
+            var Sessionid = RequestID;
+            var OrderNo = i
+            var item = {
+                Title: Name,
+                Company: Company,
+                Position: Position,
+                Date: Date,
+                RequestID: Sessionid,
+                OrderNo: OrderNo
+            };
+            itemsToCreate.push({
+                action: "create",
+                item: item
             });
+            // });
         })
+        // Execute the batch operations
+        itemsToCreate.forEach(function (itemToCreate: any) {
+            if (itemToCreate.action === "create") {
+                NewWeb.lists.getByTitle("Permit Approval Table Transaction").inBatch(batch).items.add(itemToCreate.item);
+            }
+        });
+
+        // Execute the batch
+        batch.execute().then(function () {
+            console.log("Batch operations completed successfully Permit Approval Table Transaction");
+        }).catch(function (error: any) {
+            console.log("Error in batch operations Permit Approval Table Transaction: " + error);
+        });
         NewWeb.lists.getByTitle("Permit Request Transaction").items.getById(UniqueID).update({
             PAValidity: $("#pa_validity").val(),
             PANote: $("#pa_note").val(),
@@ -455,33 +534,85 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         })
     }
     public saveHSEDepartmentDetails() {
+        var itemsToCreate: any = [];
+        var batch = NewWeb.createBatch();
         $("#hse_department_tbody tr").each(function (i, J) {
-            NewWeb.lists.getByTitle("HSE Department Table Transaction").items.add({
-                Title: $(this).find('#hse_department_name').val(),
-                Company: $(this).find('#hse_department_company').val(),
-                Position: $(this).find('#hse_department_position').val(),
-                Date: $(this).find('#hse_department_date').val(),
-                RequestID: RequestID,
-                OrderNo: i
+            // NewWeb.lists.getByTitle("HSE Department Table Transaction").items.add({
+            var Name = $(this).find('#hse_department_name').val();
+            var Company = $(this).find('#hse_department_company').val();
+            var Position = $(this).find('#hse_department_position').val();
+            var Date = $(this).find('#hse_department_date').val();
+            var Sessionid = RequestID;
+            var OrderNo = i
+            var item = {
+                Title: Name,
+                Company: Company,
+                Position: Position,
+                Date: Date,
+                RequestID: Sessionid,
+                OrderNo: OrderNo
+            };
+            itemsToCreate.push({
+                action: "create",
+                item: item
             });
+            // });
         })
-        setTimeout(() => {
+        // Execute the batch operations
+        itemsToCreate.forEach(function (itemToCreate: any) {
+            if (itemToCreate.action === "create") {
+                NewWeb.lists.getByTitle("HSE Department Table Transaction").inBatch(batch).items.add(itemToCreate.item);
+            }
+        });
+
+        // Execute the batch
+        batch.execute().then(function () {
             Swal.fire('Submitted successfully!', '', 'success').then(() => {
                 location.reload();
             })
-        }, 500)
+            console.log("Batch operations completed successfully HSE Department Table Transaction");
+        }).catch(function (error: any) {
+            console.log("Error in batch operations HSE Department Table Transaction: " + error);
+        });
     }
     public savePermitAuthorizationDetails() {
+        var itemsToCreate: any = [];
+        var batch = NewWeb.createBatch();
         $("#permit_authorization_tbody tr").each(function (i, J) {
-            NewWeb.lists.getByTitle("Permit Authorization Table Transaction").items.add({
-                Title: $(this).find('#permit_authorization_name').val(),
-                Company: $(this).find('#permit_authorization_company').val(),
-                Position: $(this).find('#permit_authorization_position').val(),
-                Date: $(this).find('#permit_authorization_date').val(),
-                RequestID: RequestID,
-                OrderNo: i
+            // NewWeb.lists.getByTitle("Permit Authorization Table Transaction").items.add({
+            var Name = $(this).find('#permit_authorization_name').val();
+            var Company = $(this).find('#permit_authorization_company').val();
+            var Position = $(this).find('#permit_authorization_position').val();
+            var Date = $(this).find('#permit_authorization_date').val();
+            var Sessionid = RequestID;
+            var OrderNo = i
+            var item = {
+                Title: Name,
+                Company: Company,
+                Position: Position,
+                Date: Date,
+                RequestID: Sessionid,
+                OrderNo: OrderNo
+            };
+            itemsToCreate.push({
+                action: "create",
+                item: item
             });
+            // });
         })
+        // Execute the batch operations
+        itemsToCreate.forEach(function (itemToCreate: any) {
+            if (itemToCreate.action === "create") {
+                NewWeb.lists.getByTitle("Permit Authorization Table Transaction").inBatch(batch).items.add(itemToCreate.item);
+            }
+        });
+
+        // Execute the batch
+        batch.execute().then(function () {
+            console.log("Batch operations completed successfully Permit Authorization Table Transaction");
+        }).catch(function (error: any) {
+            console.log("Error in batch operations Permit Authorization Table Transaction: " + error);
+        });
         var ZeroEnergy = $("#energy1").prop("checked");
         var Delegation = $("#delegation1").prop("checked");
         NewWeb.lists.getByTitle("Permit Request Transaction").items.getById(UniqueID).update({
@@ -498,43 +629,105 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         })
     }
     public saveWorksiteIssueDetails() {
+        var itemsToCreate: any = [];
+        var batch = NewWeb.createBatch();
         $("#worksite_timings_tbody tr").each(function (i, J) {
-            NewWeb.lists.getByTitle("Worksite Issue Table Transaction").items.add({
-                Title: "",
-                Date: $(this).find('#worksite_date').val(),
-                Shift: $(this).find('#shift').val(),
-                TimeFrom: $(this).find('#time_from').val(),
-                TimeTo: $(this).find('#time_to').val(),
-                AAName: $(this).find('#aa_name').val(),
-                PITime: $(this).find('#pi_time').val(),
-                PIName: $(this).find('#pi_name').val(),
-                JPTime: $(this).find('#jp_time').val(),
-                JPName: $(this).find('#jp_name').val(),
-                PermitJPTime: $(this).find('#permit_jp_time').val(),
-                PermitJPName: $(this).find('#permit_jp_name').val(),
-                PermitAATime: $(this).find('#permit_aa_time').val(),
-                PermitAAName: $(this).find('#permit_aa_name').val(),
-                RequestID: RequestID,
-                OrderNo: i
+            // NewWeb.lists.getByTitle("Worksite Issue Table Transaction").items.add({
+            var Title = "";
+            var Date = $(this).find('#worksite_date').val();
+            var Shift = $(this).find('#shift').val();
+            var TimeFrom = $(this).find('#time_from').val();
+            var TimeTo = $(this).find('#time_to').val();
+            var AAName = $(this).find('#aa_name').val();
+            var PITime = $(this).find('#pi_time').val();
+            var PIName = $(this).find('#pi_name').val();
+            var JPTime = $(this).find('#jp_time').val();
+            var JPName = $(this).find('#jp_name').val();
+            var PermitJPTime = $(this).find('#permit_jp_time').val();
+            var PermitJPName = $(this).find('#permit_jp_name').val();
+            var PermitAATime = $(this).find('#permit_aa_time').val();
+            var PermitAAName = $(this).find('#permit_aa_name').val();
+            var Sessionid = RequestID;
+            var OrderNo = i;
+            var item = {
+                Title: Title,
+                Date: Date,
+                Shift: Shift,
+                TimeFrom: TimeFrom,
+                TimeTo: TimeTo,
+                AAName: AAName,
+                PITime: PITime,
+                PIName: PIName,
+                JPTime: JPTime,
+                JPName: JPName,
+                PermitJPTime: PermitJPTime,
+                PermitJPName: PermitJPName,
+                PermitAATime: PermitAATime,
+                PermitAAName: PermitAAName,
+                RequestID: Sessionid,
+                OrderNo: OrderNo
+            };
+            itemsToCreate.push({
+                action: "create",
+                item: item
             });
+            // });
         })
-        setTimeout(() => {
+        // Execute the batch operations
+        itemsToCreate.forEach(function (itemToCreate: any) {
+            if (itemToCreate.action === "create") {
+                NewWeb.lists.getByTitle("Worksite Issue Table Transaction").inBatch(batch).items.add(itemToCreate.item);
+            }
+        });
+
+        // Execute the batch
+        batch.execute().then(function () {
             Swal.fire('Submitted successfully!', '', 'success').then(() => {
                 location.reload();
             })
-        }, 500)
+            console.log("Batch operations completed successfully Worksite Issue Table Transaction");
+        }).catch(function (error: any) {
+            console.log("Error in batch operations Worksite Issue Table Transaction: " + error);
+        });
     }
     public savePermitReturnDetails() {
+        var itemsToCreate: any = [];
+        var batch = NewWeb.createBatch();
         $("#permit_return_tbody tr").each(function (i, J) {
-            NewWeb.lists.getByTitle("Permit Return Table Transaction").items.add({
-                Title: $(this).find('#permit_return_name').val(),
-                Company: $(this).find('#permit_return_company').val(),
-                Position: $(this).find('#permit_return_position').val(),
-                Date: $(this).find('#permit_return_date').val(),
-                RequestID: RequestID,
-                OrderNo: i
+            // NewWeb.lists.getByTitle("Permit Return Table Transaction").items.add({
+            var Name = $(this).find('#permit_return_name').val();
+            var Company = $(this).find('#permit_return_company').val();
+            var Position = $(this).find('#permit_return_position').val();
+            var Date = $(this).find('#permit_return_date').val();
+            var Sessionid = RequestID;
+            var OrderNo = i
+            var item = {
+                Title: Name,
+                Company: Company,
+                Position: Position,
+                Date: Date,
+                RequestID: Sessionid,
+                OrderNo: OrderNo
+            };
+            itemsToCreate.push({
+                action: "create",
+                item: item
             });
+            // });
         })
+        // Execute the batch operations
+        itemsToCreate.forEach(function (itemToCreate: any) {
+            if (itemToCreate.action === "create") {
+                NewWeb.lists.getByTitle("Permit Return Table Transaction").inBatch(batch).items.add(itemToCreate.item);
+            }
+        });
+
+        // Execute the batch
+        batch.execute().then(function () {
+            console.log("Batch operations completed successfully Permit Return Table Transaction");
+        }).catch(function (error: any) {
+            console.log("Error in batch operations Permit Return Table Transaction: " + error);
+        });
         var PRWorksite = $("#worksite1").prop("checked");
         var PRHousekeeping = $("#housekeeping1").prop("checked");
         var PREquipmentLeft = $("#equipment1").prop("checked");
@@ -747,6 +940,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             console.log(items);
             if (items.length != 0) {
                 $("#work_permit_tbody").empty();
+                $("#work_permit tfoot").hide();
                 for (var i = 0; i < items.length; i++) {
                     $("#work_permit_tbody").append(`<tr>
                     <td><input type='text' id='work_permit_name' value='${items[i].Title}' readonly  /></td>
@@ -761,6 +955,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             console.log(items);
             if (items.length != 0) {
                 $("#permit_request_tbody").empty();
+                $("#permit_request tfoot").hide();
                 for (var m = 0; m < items.length; m++) {
                     if (m == 0) {
                         $("#permit_request_tbody").append(`<tr>
@@ -801,6 +996,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         NewWeb.lists.getByTitle("WorkSite Control Table Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
             if (items.length != 0) {
                 $("#worksite_permit_tbody").empty();
+                $("#worksite_permit tfoot").hide();
                 for (var a = 0; a < items.length; a++) {
                     $("#worksite_permit_tbody").append(`<tr>
                     <td><input type='text' id='worksite_permit_name' value='${items[a].Title}' readonly  /></td>
@@ -814,6 +1010,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         NewWeb.lists.getByTitle("Permit Endorsement Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
             if (items.length != 0) {
                 $("#permit_endorsement_tbody").empty();
+                $("#permit_endorsement tfoot").hide();
                 for (var b = 0; b < items.length; b++) {
                     $("#permit_endorsement_tbody").append(`<tr>
                     <td><input type='text' id='permit_endorsement_name' value='${items[b].Title}' readonly  /></td>
@@ -827,6 +1024,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         NewWeb.lists.getByTitle("Permit Approval Table Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
             if (items.length != 0) {
                 $("#permit_approval_tbody").empty();
+                $("#permit_approval tfoot").hide();
                 for (var c = 0; c < items.length; c++) {
                     $("#permit_approval_tbody").append(`<tr>
                     <td><input type='text' id='permit_approval_name' value='${items[c].Title}' readonly  /></td>
@@ -840,6 +1038,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         NewWeb.lists.getByTitle("HSE Department Table Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
             if (items.length != 0) {
                 $("#hse_department_tbody").empty();
+                $("#hse_department tfoot").hide();
                 for (var d = 0; d < items.length; d++) {
                     $("#hse_department_tbody").append(`<tr>
                     <td><input type='text' id='hse_department_name' value='${items[d].Title}' readonly  /></td>
@@ -853,6 +1052,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         NewWeb.lists.getByTitle("Permit Authorization Table Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
             if (items.length != 0) {
                 $("#permit_authorization_tbody").empty();
+                $("#permit_authorization tfoot").hide();
                 for (var e = 0; e < items.length; e++) {
                     $("#permit_authorization_tbody").append(`<tr>
                     <td><input type='text' id='permit_authorization_name' value='${items[e].Title}' readonly  /></td>
@@ -866,6 +1066,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         NewWeb.lists.getByTitle("Worksite Issue Table Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
             if (items.length != 0) {
                 $("#worksite_timings_tbody").empty();
+                $("#worksite_timings tfoot").hide();
                 for (var f = 0; f < items.length; f++) {
                     $("#worksite_timings_tbody").append(`<tr>
                     <td><input readonly value='${items[f].Date}' type='date' id='worksite_date' /></td>
@@ -888,6 +1089,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         NewWeb.lists.getByTitle("Permit Return Table Transaction").items.filter(`RequestID eq '${Requestid}'`).orderBy("OrderNo", true).get().then((items) => {
             if (items.length != 0) {
                 $("#permit_return_tbody").empty();
+                $("#permit_return tfoot").hide();
                 for (var g = 0; g < items.length; g++) {
                     $("#permit_return_tbody").append(`<tr>
                     <td><input type='text' id='permit_return_name' value='${items[g].Title}' readonly  /></td>

@@ -314,16 +314,43 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
         })
     }
     public saveWorkPermitRequestDetails() {
+        var itemsToCreate: any = [];
+        var batch = NewWeb.createBatch();
         $("#work_permit_tbody tr").each(function (i, J) {
-            NewWeb.lists.getByTitle("Work Permit Request Transaction").items.add({
-                Title: $(this).find('#Work_permit_name').val(),
-                Company: $(this).find('#Work_permit_company').val(),
-                Position: $(this).find('#Work_permit_position').val(),
-                Date: $(this).find('#Work_permit_date').val(),
-                RequestID: RequestID,
-                OrderNo: i
+            // NewWeb.lists.getByTitle("Work Permit Request Transaction").items.add({
+            var Name = $(this).find('#Work_permit_name').val();
+            var Company = $(this).find('#Work_permit_company').val();
+            var Position = $(this).find('#Work_permit_position').val();
+            var Date = $(this).find('#Work_permit_date').val();
+            var Sessionid = RequestID;
+            var OrderNo = i
+            // });
+            var item = {
+                Title: Name,
+                Company: Company,
+                Position: Position,
+                Date: Date,
+                RequestID: Sessionid,
+                OrderNo: OrderNo
+            };
+            itemsToCreate.push({
+                action: "create",
+                item: item
             });
         })
+        // Execute the batch operations
+        itemsToCreate.forEach(function (itemToCreate: any) {
+            if (itemToCreate.action === "create") {
+                NewWeb.lists.getByTitle("Work Permit Request Transaction").inBatch(batch).items.add(itemToCreate.item);
+            }
+        });
+
+        // Execute the batch
+        batch.execute().then(function () {
+            console.log("Batch operations completed successfully Work Permit Request Transaction");
+        }).catch(function (error: any) {
+            console.log("Error in batch operations Work Permit Request Transaction: " + error);
+        });
     }
     // public saveWorkSiteControlDetails() {
     //     $("#worksite_permit_tbody tr").each(function (i, J) {
