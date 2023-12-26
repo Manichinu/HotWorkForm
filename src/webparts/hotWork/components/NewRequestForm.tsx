@@ -49,7 +49,7 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
         this.GetCurrentLoggedUser();
         this.getApproverListDetails();
         $(".cancel_btn").on('click', function () {
-            location.reload();
+            window.open("https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView", "_self");
         })
         $(".tabs").on('click', function () {
             $(".tabs").removeClass('active');
@@ -242,37 +242,13 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
             RequestID = "Session-" + moment().format("DDMMYYYYHHmmss");
         }
         if (CurrentSection == "Section1") {
-            // if (this.formValidation()) {
-            this.savePermitRequestDetails();
-            this.saveLocationEquipmentDetails();
-            this.saveWorkPermitRequestDetails();
-            this.updateWorkFlowHistory();
-            // }
+            if (this.formValidation()) {
+                this.savePermitRequestDetails();
+                this.saveLocationEquipmentDetails();
+                this.saveWorkPermitRequestDetails();
+                this.updateWorkFlowHistory();
+            }
         }
-        // if (CurrentSection == "Section2") {
-        //     this.saveWorkSiteControlDetails();
-        //     this.fileUploadForWorksiteControl();
-        //     this.fileUploadForWorksiteAttachments();
-        // }
-        // if (CurrentSection == "Section3") {
-        //     this.savePermitEndorsementDetails();
-        // }
-        // if (CurrentSection == "Section4") {
-        //     this.savePermitApprovalDetails();
-        // }
-        // if (CurrentSection == "Section5") {
-        //     this.saveHSEDepartmentDetails();
-        // }
-        // if (CurrentSection == "Section6") {
-        //     this.savePermitAuthorizationDetails();
-        // }
-        // if (CurrentSection == "Section7") {
-        //     this.saveWorksiteIssueDetails();
-        // }
-        // if (CurrentSection == "Section8") {
-        //     this.savePermitReturnDetails();
-        //     this.savePermitClosureDetails();
-        // }
     }
     public savePermitRequestDetails() {
         var Contractor = $("#contractor1").prop("checked");
@@ -300,7 +276,7 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
             Status: "Pending"
         }).then(() => {
             Swal.fire('Submitted successfully!', '', 'success').then(() => {
-                location.reload();
+                window.open("https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView", "_self");
             })
         })
     }
@@ -691,77 +667,125 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
         var Planning = $(".planning:checked").length;
 
         if (NatureofWork == "") {
+            $(".err-nature").show();
             FormStatus = false
+        } else {
+            $(".err-nature").hide();
         }
         if (WorkTitle == "") {
+            $(".err-title").show();
             FormStatus = false
+        } else {
+            $(".err-title").hide();
         }
         if (StartDate == "") {
+            $(".err-start").show();
             FormStatus = false
+        } else {
+            $(".err-start").hide();
         }
         if (EndDate == "") {
+            $(".err-end").show();
             FormStatus = false
+        } else {
+            $(".err-end").hide();
         }
         if (Equipment == "") {
+            $(".err-equipment").show();
             FormStatus = false
+        } else {
+            $(".err-equipment").hide();
         }
         if (HazardousArea == "") {
+            $(".err-area").show();
             FormStatus = false
+        } else {
+            $(".err-area").hide();
         }
         if (Description == "") {
+            $(".err-desc").show();
             FormStatus = false
+        } else {
+            $(".err-desc").hide();
         }
         if (Tools == "") {
+            $(".err-tools").show();
             FormStatus = false
+        } else {
+            $(".err-tools").hide();
         }
         if (Source == "") {
+            $(".err-source").show();
             FormStatus = false
+        } else {
+            $(".err-source").hide();
         }
         if (Hazardous == "") {
+            $(".err-hazardous").show();
             FormStatus = false
+        } else {
+            $(".err-hazardous").hide();
         }
         if (JP == "") {
+            $(".err-jp").show();
             FormStatus = false
+        } else {
+            $(".err-jp").hide();
         }
         if (Section == "") {
+            $(".err-section").show();
             FormStatus = false
+        } else {
+            $(".err-section").hide();
         }
         if (Name == "") {
+            $(".err-name").show();
             FormStatus = false
+        } else {
+            $(".err-name").hide();
         }
         if (NoofWorkers == "") {
+            $(".err-workers").show();
             FormStatus = false
+        } else {
+            $(".err-workers").hide();
         }
         if (Contractor == 0) {
+            $(".err-contractor").show();
             FormStatus = false
+        } else {
+            $(".err-contractor").hide();
         }
         if (Planning == 0) {
+            $(".err-planning").show();
             FormStatus = false
+        } else {
+            $(".err-planning").hide();
         }
-        $("#work_permit_tbody tr").each(function (i, J) {
-            var Name = $(this).find('#Work_permit_name').val();
-            var Company = $(this).find('#Work_permit_company').val();
-            var Position = $(this).find('#Work_permit_position').val();
-            var Date = $(this).find('#Work_permit_date').val();
-            if (Name == "" || Company == "" || Position == "" || Date == "") {
-                FormStatus = false
-            }
-        });
-        $("#permit_request_tbody tr").each(function (i, J) {
-            var LocationValue = $(this).find('.location_value').val();
-            if (LocationValue == "") {
-                FormStatus = false
-            }
-        })
-        if (FormStatus == false) {
-            Swal.fire({
-                text: "Please fill all the fields",
-                icon: "warning",
-                customClass: {
-                    popup: 'form-validation',
-                },
-            });
-        }
+        // $("#work_permit_tbody tr").each(function (i, J) {
+        //     var Name = $(this).find('#Work_permit_name').val();
+        //     var Company = $(this).find('#Work_permit_company').val();
+        //     var Position = $(this).find('#Work_permit_position').val();
+        //     var Date = $(this).find('#Work_permit_date').val();
+        //     if (Name == "" || Company == "" || Position == "" || Date == "") {
+        //         FormStatus = false
+        //     }
+        // });
+        // $("#permit_request_tbody tr").each(function (i, J) {
+        //     var LocationValue = $(this).find('.location_value').val();
+        //     if (LocationValue == "") {
+        //         FormStatus = false
+        //     }
+        // })
+        // if (FormStatus == false) {
+        //     Swal.fire({
+        //         text: "Please fill all the fields",
+        //         icon: "warning",
+        //         customClass: {
+        //             popup: 'form-validation',
+        //         },
+        //     });
+        // }
         return FormStatus;
     }
     public goForwardSection() {
@@ -880,24 +904,28 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                             <div className="form-group">
                                                                 <label> Nature of Work </label>
                                                                 <textarea id="work_nature" className="form-control" ></textarea>
+                                                                <p className='err-msg err-nature' style={{ display: "none" }}>This field is required</p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-3">
                                                             <div className="form-group">
                                                                 <label>Work Title</label>
                                                                 <textarea id="work_title" className="form-control" ></textarea>
+                                                                <p className='err-msg err-title' style={{ display: "none" }}>This field is required</p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-3">
                                                             <div className="form-group">
                                                                 <label> Planned Start Date </label>
                                                                 <input type="date" id="start_date" className="form-control" />
+                                                                <p className='err-msg err-start' style={{ display: "none" }}>This field is required</p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-3">
                                                             <div className="form-group">
                                                                 <label> Planned Finish Date </label>
                                                                 <input type="date" id="end_date" className="form-control" />
+                                                                <p className='err-msg err-end' style={{ display: "none" }}>This field is required</p>
                                                             </div>
                                                         </div>
 
@@ -963,18 +991,21 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                             <div className="form-group">
                                                                 <label>Equipment Description </label>
                                                                 <textarea id="equipment_description" className="form-control"></textarea>
+                                                                <p className='err-msg err-equipment' style={{ display: "none" }}>This field is required</p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-3">
                                                             <div className="form-group">
                                                                 <label> HAC Hazardous Area classification  </label>
                                                                 <textarea id="hazardous_description" className="form-control"></textarea>
+                                                                <p className='err-msg err-area' style={{ display: "none" }}>This field is required</p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-3">
                                                             <div className="form-group">
                                                                 <label> Description of Work </label>
                                                                 <textarea id="work_description" className="form-control"></textarea>
+                                                                <p className='err-msg err-desc' style={{ display: "none" }}>This field is required</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -985,24 +1016,28 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                                 <div className="form-group">
                                                                     <label>Tools to be used</label>
                                                                     <input type='text' id='tools' className="form-control" />
+                                                                    <p className='err-msg err-tools' style={{ display: "none" }}>This field is required</p>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <div className="form-group">
                                                                     <label>Source of ignition</label>
                                                                     <input type='text' id='source_ignition' className="form-control" />
+                                                                    <p className='err-msg err-source' style={{ display: "none" }}>This field is required</p>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <div className="form-group">
                                                                     <label>Hazardous Materials Involved</label>
                                                                     <textarea id="hazardous_materials" className="form-control"></textarea>
+                                                                    <p className='err-msg err-hazardous' style={{ display: "none" }}>This field is required</p>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <div className="form-group">
                                                                     <label>Job Performer (JP) Details</label>
                                                                     <textarea id="job_performer" className="form-control"></textarea>
+                                                                    <p className='err-msg err-jp' style={{ display: "none" }}>This field is required</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1011,18 +1046,21 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                                 <div className="form-group">
                                                                     <label>Section/Department</label>
                                                                     <input type='text' id='section' className="form-control" />
+                                                                    <p className='err-msg err-section' style={{ display: "none" }}>This field is required</p>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <div className="form-group">
                                                                     <label>Name</label>
                                                                     <input type='text' id='name' className="form-control" />
+                                                                    <p className='err-msg err-name' style={{ display: "none" }}>This field is required</p>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <div className="form-group">
                                                                     <label>Planned No.of Workers</label>
                                                                     <input type='text' id='no_of_workers' className="form-control" />
+                                                                    <p className='err-msg err-workers' style={{ display: "none" }}>This field is required</p>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-3 radio_block">
@@ -1038,6 +1076,7 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                                             <label className="form-check-label" htmlFor="contractor2">No</label>
                                                                         </div>
                                                                     </div>
+                                                                    <p className='err-msg err-contractor' style={{ display: "none" }}>This field is required</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1055,6 +1094,7 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                                             <label className="form-check-label" htmlFor="planned2">Break-in/Emergency</label>
                                                                         </div>
                                                                     </div>
+                                                                    <p className='err-msg err-planning' style={{ display: "none" }}>This field is required</p>
                                                                 </div>
                                                             </div>
                                                         </div>

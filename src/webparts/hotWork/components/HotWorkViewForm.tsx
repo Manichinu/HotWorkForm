@@ -63,7 +63,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
 
         this.GetCurrentLoggedUser();
         $(".cancel_btn").on('click', function () {
-            location.reload();
+            window.open("https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView", "_self");
         })
         $(".tabs").on('click', function () {
             $(".tabs").removeClass('active');
@@ -364,7 +364,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             if (errors.length === 0) {
                 setTimeout(() => {
                     Swal.fire('Submitted successfully!', '', 'success').then(() => {
-                        location.reload();
+                        window.open("https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView", "_self");
                     })
                 }, 1000)
                 console.log("All promises fulfilled successfully");
@@ -420,7 +420,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             RequestID: RequestID,
         }).then(() => {
             Swal.fire('Submitted successfully!', '', 'success').then(() => {
-                location.reload();
+                window.open("https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView", "_self");
             })
         })
     }
@@ -503,7 +503,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         }).then(() => {
             // setTimeout(() => {
             //     Swal.fire('Submitted successfully!', '', 'success').then(() => {
-            //         location.reload();
+            //         window.open("https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView", "_self");
             //     })
             // }, 200);
         })
@@ -543,7 +543,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         // Execute the batch
         batch.execute().then(function () {
             Swal.fire('Submitted successfully!', '', 'success').then(() => {
-                location.reload();
+                window.open("https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView", "_self");
             })
             console.log("Batch operations completed successfully Permit Endorsement Transaction");
         }).catch(function (error: any) {
@@ -593,7 +593,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             PANote: $("#pa_note").val(),
         }).then(() => {
             Swal.fire('Submitted successfully!', '', 'success').then(() => {
-                location.reload();
+                window.open("https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView", "_self");
             })
         })
     }
@@ -632,7 +632,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         // Execute the batch
         batch.execute().then(function () {
             Swal.fire('Submitted successfully!', '', 'success').then(() => {
-                location.reload();
+                window.open("https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView", "_self");
             })
             console.log("Batch operations completed successfully HSE Department Table Transaction");
         }).catch(function (error: any) {
@@ -688,7 +688,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             PermitValidTill: $("#permit_valid_till").val(),
         }).then(() => {
             Swal.fire('Submitted successfully!', '', 'success').then(() => {
-                location.reload();
+                window.open("https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView", "_self");
             })
         })
     }
@@ -747,7 +747,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         // Execute the batch
         batch.execute().then(function () {
             Swal.fire('Submitted successfully!', '', 'success').then(() => {
-                location.reload();
+                window.open("https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView", "_self");
             })
             console.log("Batch operations completed successfully Worksite Issue Table Transaction");
         }).catch(function (error: any) {
@@ -815,7 +815,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             Status: "Approved"
         }).then(() => {
             Swal.fire('Submitted successfully!', '', 'success').then(() => {
-                location.reload();
+                window.open("https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView", "_self");
             })
         })
     }
