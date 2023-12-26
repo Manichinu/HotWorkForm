@@ -122,7 +122,7 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
         console.log(this.state.LoggedinuserName, this.state.CurrentUserProfilePic);
     }
     private Dropdown() {
-        $(".user-profile-details").addClass("open");
+        $(".user-profile-details").toggleClass("open");
     }
     public addNewRow(Section: string) {
         if (Section == "Level1Table") {
@@ -801,7 +801,7 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
         $(".tab" + Section + "").addClass('active');
     }
     public render(): React.ReactElement<IHotWorkProps> {
-        SPComponentLoader.loadCss(`${this.props.siteurl}/SiteAssets/AlQasimiForms/css/style.css?v=1.4`);
+        SPComponentLoader.loadCss(`${this.props.siteurl}/SiteAssets/AlQasimiForms/css/style.css?v=1.5`);
         SPComponentLoader.loadScript(`https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js`);
         SPComponentLoader.loadCss(`https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css`);
         SPComponentLoader.loadScript(`https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js`);
@@ -822,7 +822,7 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                         <header>
                             <div className="container clearfix">
                                 <div className="logo">
-                                    <a href="#"> <img src={`${this.props.siteurl}/SiteAssets/AlQasimiForms/img/Logo.png`} alt="image" /> </a>
+                                    <a href="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView"> <img src={`${this.props.siteurl}/SiteAssets/AlQasimiForms/img/Logo.png`} alt="image" /> </a>
                                 </div>
                                 <div className="notification-part">
                                     <ul>
@@ -904,28 +904,28 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                             <div className="form-group">
                                                                 <label> Nature of Work </label>
                                                                 <textarea id="work_nature" className="form-control" ></textarea>
-                                                                <p className='err-msg err-nature' style={{ display: "none" }}>This field is required</p>
+                                                                <p className='err-msg err-nature' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-3">
                                                             <div className="form-group">
                                                                 <label>Work Title</label>
                                                                 <textarea id="work_title" className="form-control" ></textarea>
-                                                                <p className='err-msg err-title' style={{ display: "none" }}>This field is required</p>
+                                                                <p className='err-msg err-title' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-3">
                                                             <div className="form-group">
                                                                 <label> Planned Start Date </label>
                                                                 <input type="date" id="start_date" className="form-control" />
-                                                                <p className='err-msg err-start' style={{ display: "none" }}>This field is required</p>
+                                                                <p className='err-msg err-start' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-3">
                                                             <div className="form-group">
                                                                 <label> Planned Finish Date </label>
                                                                 <input type="date" id="end_date" className="form-control" />
-                                                                <p className='err-msg err-end' style={{ display: "none" }}>This field is required</p>
+                                                                <p className='err-msg err-end' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                             </div>
                                                         </div>
 
@@ -991,21 +991,21 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                             <div className="form-group">
                                                                 <label>Equipment Description </label>
                                                                 <textarea id="equipment_description" className="form-control"></textarea>
-                                                                <p className='err-msg err-equipment' style={{ display: "none" }}>This field is required</p>
+                                                                <p className='err-msg err-equipment' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-3">
                                                             <div className="form-group">
                                                                 <label> HAC Hazardous Area classification  </label>
                                                                 <textarea id="hazardous_description" className="form-control"></textarea>
-                                                                <p className='err-msg err-area' style={{ display: "none" }}>This field is required</p>
+                                                                <p className='err-msg err-area' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                             </div>
                                                         </div>
                                                         <div className="col-md-3">
                                                             <div className="form-group">
                                                                 <label> Description of Work </label>
                                                                 <textarea id="work_description" className="form-control"></textarea>
-                                                                <p className='err-msg err-desc' style={{ display: "none" }}>This field is required</p>
+                                                                <p className='err-msg err-desc' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1016,28 +1016,28 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                                 <div className="form-group">
                                                                     <label>Tools to be used</label>
                                                                     <input type='text' id='tools' className="form-control" />
-                                                                    <p className='err-msg err-tools' style={{ display: "none" }}>This field is required</p>
+                                                                    <p className='err-msg err-tools' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <div className="form-group">
                                                                     <label>Source of ignition</label>
                                                                     <input type='text' id='source_ignition' className="form-control" />
-                                                                    <p className='err-msg err-source' style={{ display: "none" }}>This field is required</p>
+                                                                    <p className='err-msg err-source' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <div className="form-group">
                                                                     <label>Hazardous Materials Involved</label>
                                                                     <textarea id="hazardous_materials" className="form-control"></textarea>
-                                                                    <p className='err-msg err-hazardous' style={{ display: "none" }}>This field is required</p>
+                                                                    <p className='err-msg err-hazardous' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <div className="form-group">
                                                                     <label>Job Performer (JP) Details</label>
                                                                     <textarea id="job_performer" className="form-control"></textarea>
-                                                                    <p className='err-msg err-jp' style={{ display: "none" }}>This field is required</p>
+                                                                    <p className='err-msg err-jp' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1046,21 +1046,21 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                                 <div className="form-group">
                                                                     <label>Section/Department</label>
                                                                     <input type='text' id='section' className="form-control" />
-                                                                    <p className='err-msg err-section' style={{ display: "none" }}>This field is required</p>
+                                                                    <p className='err-msg err-section' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <div className="form-group">
                                                                     <label>Name</label>
                                                                     <input type='text' id='name' className="form-control" />
-                                                                    <p className='err-msg err-name' style={{ display: "none" }}>This field is required</p>
+                                                                    <p className='err-msg err-name' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <div className="form-group">
                                                                     <label>Planned No.of Workers</label>
                                                                     <input type='text' id='no_of_workers' className="form-control" />
-                                                                    <p className='err-msg err-workers' style={{ display: "none" }}>This field is required</p>
+                                                                    <p className='err-msg err-workers' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-3 radio_block">
@@ -1076,7 +1076,7 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                                             <label className="form-check-label" htmlFor="contractor2">No</label>
                                                                         </div>
                                                                     </div>
-                                                                    <p className='err-msg err-contractor' style={{ display: "none" }}>This field is required</p>
+                                                                    <p className='err-msg err-contractor' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1094,7 +1094,7 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                                             <label className="form-check-label" htmlFor="planned2">Break-in/Emergency</label>
                                                                         </div>
                                                                     </div>
-                                                                    <p className='err-msg err-planning' style={{ display: "none" }}>This field is required</p>
+                                                                    <p className='err-msg err-planning' style={{ display: "none" }}><img src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/error.svg" className="err-icon" />This field is required</p>
                                                                 </div>
                                                             </div>
                                                         </div>

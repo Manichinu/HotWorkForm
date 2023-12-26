@@ -217,7 +217,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
         console.log(this.state.LoggedinuserName, this.state.CurrentUserProfilePic);
     }
     private Dropdown() {
-        $(".user-profile-details").addClass("open");
+        $(".user-profile-details").toggleClass("open");
     }
     public addNewRow(Section: string) {
         if (Section == "Level1Table") {
@@ -1316,7 +1316,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
     }
 
     public render(): React.ReactElement<IHotWorkProps> {
-        SPComponentLoader.loadCss(`${this.props.siteurl}/SiteAssets/AlQasimiForms/css/style.css?v=1.4`);
+        SPComponentLoader.loadCss(`${this.props.siteurl}/SiteAssets/AlQasimiForms/css/style.css?v=1.5`);
         SPComponentLoader.loadScript(`https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js`);
         SPComponentLoader.loadCss(`https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css`);
         SPComponentLoader.loadScript(`https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js`);
@@ -1337,7 +1337,7 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
                         <header>
                             <div className="container clearfix">
                                 <div className="logo">
-                                    <a href="#"> <img src={`${this.props.siteurl}/SiteAssets/AlQasimiForms/img/Logo.png`} alt="image" /> </a>
+                                    <a href="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SitePages/HotWorkForm.aspx?env=WebView"> <img src={`${this.props.siteurl}/SiteAssets/AlQasimiForms/img/Logo.png`} alt="image" /> </a>
                                 </div>
                                 <div className="notification-part">
                                     <ul>
