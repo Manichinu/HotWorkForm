@@ -1302,6 +1302,18 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
             currentPage: level
         })
     }
+    public goForwardSection() {
+        this.setState({ currentPage: this.state.currentPage + 1 });
+        var Section = this.state.currentPage + 1;
+        $(".tabs").removeClass('active');
+        $(".tab" + Section + "").addClass('active');
+    }
+    public goBackwardSection() {
+        this.setState({ currentPage: this.state.currentPage - 1 });
+        var Section = this.state.currentPage - 1;
+        $(".tabs").removeClass('active');
+        $(".tab" + Section + "").addClass('active');
+    }
 
     public render(): React.ReactElement<IHotWorkProps> {
         SPComponentLoader.loadCss(`${this.props.siteurl}/SiteAssets/AlQasimiForms/css/style.css?v=1.4`);
@@ -2721,10 +2733,10 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
                                             </div>
                                             <div className='prev-next-wrap'>
                                                 {this.state.currentPage != 1 &&
-                                                    <img onClick={() => this.setState({ currentPage: this.state.currentPage - 1 })} src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/prev-icon.svg" className="prev-icon" />
+                                                    <img onClick={() => this.goBackwardSection()} src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/prev-icon.svg" className="prev-icon" />
                                                 }
                                                 {indexOfLastItem <= 8 &&
-                                                    <img onClick={() => this.setState({ currentPage: this.state.currentPage + 1 })} src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next-icon.svg" className="next-icon" />
+                                                    <img onClick={() => this.goForwardSection()} src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next-icon.svg" className="next-icon" />
                                                 }
                                             </div>
 
