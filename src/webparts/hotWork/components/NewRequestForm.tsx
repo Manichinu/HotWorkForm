@@ -9,6 +9,7 @@ import { Web } from '@pnp/sp/presets/all';
 import * as moment from "moment";
 // import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
 import HotWork from './HotWork';
+// import swal from "sweetalert";
 
 
 let NewWeb = Web("https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC");
@@ -240,11 +241,13 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
         if (RequestID == "") {
             RequestID = "Session-" + moment().format("DDMMYYYYHHmmss");
         }
-        this.updateWorkFlowHistory();
         if (CurrentSection == "Section1") {
-            this.savePermitRequestDetails();
-            this.saveLocationEquipmentDetails();
-            this.saveWorkPermitRequestDetails();
+            if (this.formValidation()) {
+                this.savePermitRequestDetails();
+                this.saveLocationEquipmentDetails();
+                this.saveWorkPermitRequestDetails();
+                this.updateWorkFlowHistory();
+            }
         }
         // if (CurrentSection == "Section2") {
         //     this.saveWorkSiteControlDetails();
@@ -668,7 +671,99 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
             currentPage: level
         })
     }
+    public formValidation() {
+        var FormStatus = true;
+        var NatureofWork = $("#work_nature").val();
+        var WorkTitle = $("#work_title").val();
+        var StartDate = $("#start_date").val();
+        var EndDate = $("#end_date").val();
+        var Equipment = $("#equipment_description").val();
+        var HazardousArea = $("#hazardous_description").val();
+        var Description = $("#work_description").val();
+        var Tools = $("#tools").val();
+        var Source = $("#source_ignition").val();
+        var Hazardous = $("#hazardous_materials").val();
+        var JP = $("#job_performer").val();
+        var Section = $("#section").val();
+        var Name = $("#name").val();
+        var NoofWorkers = $("#no_of_workers").val();
+        var Contractor = $(".contractor:checked").length;
+        var Planning = $(".planning:checked").length;
 
+        if (NatureofWork == "") {
+            FormStatus = false
+        }
+        if (WorkTitle == "") {
+            FormStatus = false
+        }
+        if (StartDate == "") {
+            FormStatus = false
+        }
+        if (EndDate == "") {
+            FormStatus = false
+        }
+        if (Equipment == "") {
+            FormStatus = false
+        }
+        if (HazardousArea == "") {
+            FormStatus = false
+        }
+        if (Description == "") {
+            FormStatus = false
+        }
+        if (Tools == "") {
+            FormStatus = false
+        }
+        if (Source == "") {
+            FormStatus = false
+        }
+        if (Hazardous == "") {
+            FormStatus = false
+        }
+        if (JP == "") {
+            FormStatus = false
+        }
+        if (Section == "") {
+            FormStatus = false
+        }
+        if (Name == "") {
+            FormStatus = false
+        }
+        if (NoofWorkers == "") {
+            FormStatus = false
+        }
+        if (Contractor == 0) {
+            FormStatus = false
+        }
+        if (Planning == 0) {
+            FormStatus = false
+        }
+        $("#work_permit_tbody tr").each(function (i, J) {
+            var Name = $(this).find('#Work_permit_name').val();
+            var Company = $(this).find('#Work_permit_company').val();
+            var Position = $(this).find('#Work_permit_position').val();
+            var Date = $(this).find('#Work_permit_date').val();
+            if (Name == "" || Company == "" || Position == "" || Date == "") {
+                FormStatus = false
+            }
+        });
+        $("#permit_request_tbody tr").each(function (i, J) {
+            var LocationValue = $(this).find('.location_value').val();
+            if (LocationValue == "") {
+                FormStatus = false
+            }
+        })
+        if (FormStatus == false) {
+            Swal.fire({
+                text: "Please fill all the fields",
+                icon: "warning",
+                customClass: {
+                    popup: 'form-validation',
+                },
+            });
+        }
+        return FormStatus;
+    }
     public render(): React.ReactElement<IHotWorkProps> {
         SPComponentLoader.loadCss(`${this.props.siteurl}/SiteAssets/AlQasimiForms/css/style.css?v=1.4`);
         SPComponentLoader.loadScript(`https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js`);
@@ -720,45 +815,45 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                         {/* <p className='UniqueID'>{this.state.UniqueId} </p> */}
                                     </div>
                                     <div className='clearfix wrapper-main'>
-                                        <div className='left-side-container'>
-                                            <ul>
-                                                <li className='tabs tab1 active' onClick={() => this.setCurrentSecForm(1)}>
-                                                    <div>
+                                        <div className='left-side-container new_form'>
+                                            <ul className='clearfix'>
+                                                <li className='tabs clearfix tab1 active' onClick={() => this.setCurrentSecForm(1)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>Permit Request</p>
                                                     </div>
                                                 </li>
-                                                <li className='tabs tab2' onClick={() => this.setCurrentSecForm(2)}>
-                                                    <div>
+                                                <li className='tabs clearfix tab2' onClick={() => this.setCurrentSecForm(2)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>Worksite Control</p>
                                                     </div>
                                                 </li>
-                                                <li className='tabs tab3' onClick={() => this.setCurrentSecForm(3)}>
-                                                    <div>
+                                                <li className='tabs clearfix tab3' onClick={() => this.setCurrentSecForm(3)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>Permit Endorsement</p>
                                                     </div>
                                                 </li>
-                                                <li className='tabs tab4' onClick={() => this.setCurrentSecForm(4)}>
-                                                    <div>
+                                                <li className='tabs clearfix tab4' onClick={() => this.setCurrentSecForm(4)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>Permit Approval</p>
                                                     </div>
                                                 </li>
-                                                <li className='tabs tab5' onClick={() => this.setCurrentSecForm(5)}>
-                                                    <div>
+                                                <li className='tabs clearfix tab5' onClick={() => this.setCurrentSecForm(5)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>HSE Department</p>
                                                     </div>
                                                 </li>
-                                                <li className='tabs tab6' onClick={() => this.setCurrentSecForm(6)}>
-                                                    <div>
+                                                <li className='tabs clearfix tab6' onClick={() => this.setCurrentSecForm(6)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>Permit Authorization</p>
                                                     </div>
                                                 </li>
-                                                <li className='tabs tab7' onClick={() => this.setCurrentSecForm(7)}>
-                                                    <div>
+                                                <li className='tabs clearfix tab7' onClick={() => this.setCurrentSecForm(7)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>Worksite Issue</p>
                                                     </div>
                                                 </li>
-                                                <li className='tabs tab8' onClick={() => this.setCurrentSecForm(8)}>
-                                                    <div>
+                                                <li className='tabs clearfix tab8' onClick={() => this.setCurrentSecForm(8)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>Permit Closure</p>
                                                     </div>
                                                 </li>
@@ -908,7 +1003,7 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <div className="form-group">
-                                                                    <label>Name(s)</label>
+                                                                    <label>Name</label>
                                                                     <input type='text' id='name' className="form-control" />
                                                                 </div>
                                                             </div>
@@ -923,11 +1018,11 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                                     <label>Contractor</label>
                                                                     <div>
                                                                         <div className="form-check">
-                                                                            <input className="form-check-input" type="radio" name="contractor" id="contractor1" />
+                                                                            <input className="form-check-input contractor" type="radio" name="contractor" id="contractor1" />
                                                                             <label className="form-check-label" htmlFor="contractor1">Yes</label>
                                                                         </div>
                                                                         <div className="form-check">
-                                                                            <input className="form-check-input" type="radio" name="contractor" id="contractor2" />
+                                                                            <input className="form-check-input contractor" type="radio" name="contractor" id="contractor2" />
                                                                             <label className="form-check-label" htmlFor="contractor2">No</label>
                                                                         </div>
                                                                     </div>
@@ -940,11 +1035,11 @@ export default class NewRequestForm extends React.Component<IHotWorkProps, HotWo
                                                                     <label>Work Planning</label>
                                                                     <div>
                                                                         <div className="form-check">
-                                                                            <input className="form-check-input" type="radio" name="planning" id="planned1" />
+                                                                            <input className="form-check-input planning" type="radio" name="planning" id="planned1" />
                                                                             <label className="form-check-label" htmlFor="planned1">Planned</label>
                                                                         </div>
                                                                         <div className="form-check">
-                                                                            <input className="form-check-input" type="radio" name="planning" id="planned2" />
+                                                                            <input className="form-check-input planning" type="radio" name="planning" id="planned2" />
                                                                             <label className="form-check-label" htmlFor="planned2">Break-in/Emergency</label>
                                                                         </div>
                                                                     </div>

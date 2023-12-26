@@ -1355,61 +1355,66 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
                                     </div>
                                     <div className='clearfix wrapper-main'>
                                         <div className='left-side-container'>
-                                            <ul>
-                                                <li className='tabs tab1' onClick={() => this.setCurrentSecForm(1)}>
-                                                    <div>
+                                            <ul className='clearfix'>
+                                                <li className='tabs clearfix tab1' onClick={() => this.setCurrentSecForm(1)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>Permit Request</p>
-                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
-                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
+                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/complete.svg" />
+                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/pending-status.svg" />
                                                     </div>
                                                 </li>
-                                                <li className='tabs tab2' onClick={() => this.setCurrentSecForm(2)}>
-                                                    <div>
+                                                <li className='tabs clearfix tab2' onClick={() => this.setCurrentSecForm(2)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>Worksite Control</p>
-                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
-                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
+                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/complete.svg" />
+                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/pending-status.svg" />
                                                     </div>
                                                 </li>
-                                                <li className='tabs tab3' onClick={() => this.setCurrentSecForm(3)}>
-                                                    <div>
+                                                <li className='tabs clearfix tab3' onClick={() => this.setCurrentSecForm(3)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>Permit Endorsement</p>
-                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
-                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
+                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/complete.svg" />
+                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/pending-status.svg" />
                                                     </div>
                                                 </li>
-                                                <li className='tabs tab4' onClick={() => this.setCurrentSecForm(4)}>
-                                                    <div>
+                                                <li className='tabs clearfix tab4' onClick={() => this.setCurrentSecForm(4)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>Permit Approval</p>
-                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
-                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
+                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/complete.svg" />
+                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/pending-status.svg" />
                                                     </div>
                                                 </li>
-                                                <li className='tabs tab5' onClick={() => this.setCurrentSecForm(5)}>
-                                                    <div>
+                                                <li className='tabs clearfix tab5' onClick={() => this.setCurrentSecForm(5)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>HSE Department</p>
-                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
-                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
+                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/complete.svg" />
+                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/pending-status.svg" />
                                                     </div>
                                                 </li>
-                                                <li className='tabs tab6' onClick={() => this.setCurrentSecForm(6)}>
-                                                    <div>
+                                                <li className='tabs clearfix tab6' onClick={() => this.setCurrentSecForm(6)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>Permit Authorization</p>
-                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
-                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
+                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/complete.svg" />
+                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/pending-status.svg" />
                                                     </div>
                                                 </li>
-                                                <li className='tabs tab7' onClick={() => this.setCurrentSecForm(7)}>
-                                                    <div>
+                                                <li className='tabs clearfix tab7' onClick={() => this.setCurrentSecForm(7)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>Worksite Issue</p>
-                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
-                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
+                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/complete.svg" />
+                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/pending-status.svg" />
                                                     </div>
                                                 </li>
-                                                <li className='tabs tab8' onClick={() => this.setCurrentSecForm(8)}>
-                                                    <div>
+                                                <li className='tabs clearfix tab8' onClick={() => this.setCurrentSecForm(8)}>
+                                                    <div className='status-wrap clearfix'>
                                                         <p>Permit Closure</p>
-                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
-                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next.svg" />
+                                                        <img className='completed' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/complete.svg" />
+                                                        <img className='pending active' src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/pending-status.svg" />
+                                                    </div>
+                                                </li>
+                                                <li className='tabs clearfix tab9' onClick={() => this.setCurrentSecForm(9)}>
+                                                    <div className='status-wrap clearfix'>
+                                                        <p>WF History Details</p>
                                                     </div>
                                                 </li>
 
@@ -2676,50 +2681,53 @@ export default class HotWorkViewForm extends React.Component<IHotWorkProps, HotW
                                                     <button className="cancel_btn"> Cancel </button>
                                                 </div>
                                             </div>
+                                            <div className='section9 forms' style={{ display: indexOfFirstItem <= 8 && indexOfLastItem >= 9 ? 'block' : 'none' }}>
+                                                <div className="form_block workflow">
+                                                    <div className='wf-text'>
+                                                        <h6>WF History Details</h6>
+                                                        <div className="table-responsive">
+                                                            <table className="table" id="wf_details">
+                                                                <thead>
+                                                                    <tr className="open">
+                                                                        <th>S.No</th>
+                                                                        <th>Level</th>
+                                                                        <th>Assigned By</th>
+                                                                        <th>Assigned To</th>
+                                                                        <th>Approved By</th>
+                                                                        <th>Status</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="wf_details_tbody">
+                                                                    {this.state.WFDetails && this.state.WFDetails.map((item, i) => {
+                                                                        return (
+                                                                            <>
+                                                                                <tr>
+                                                                                    <td>{i + 1}</td>
+                                                                                    <td>Section {item.Level}</td>
+                                                                                    <td>{item.AssignedById != null ? item.AssignedBy.Title : "-"}</td>
+                                                                                    <td>{item.AssignedToId != null ? item.AssignedTo.Title : "-"}</td>
+                                                                                    <td>{item.ApprovedById != null ? item.ApprovedBy.Title : "-"}</td>
+                                                                                    <td>{item.Status}</td>
+                                                                                </tr>
+                                                                            </>
+                                                                        )
+                                                                    })}
+                                                                </tbody>
+
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div className='prev-next-wrap'>
                                                 {this.state.currentPage != 1 &&
                                                     <img onClick={() => this.setState({ currentPage: this.state.currentPage - 1 })} src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/prev-icon.svg" className="prev-icon" />
                                                 }
-                                                {indexOfLastItem <= 7 &&
+                                                {indexOfLastItem <= 8 &&
                                                     <img onClick={() => this.setState({ currentPage: this.state.currentPage + 1 })} src="https://remodigital.sharepoint.com/sites/Remo/RemoSolutions/DigitalForms/POC/SiteAssets/AlQasimiForms/img/next-icon.svg" className="next-icon" />
                                                 }
                                             </div>
-                                            <div className="form_block workflow">
-                                                <div className='wf-text'>
-                                                    <h6>WF History Details</h6>
-                                                    <div className="table-responsive">
-                                                        <table className="table" id="wf_details">
-                                                            <thead>
-                                                                <tr className="open">
-                                                                    <th>S.No</th>
-                                                                    <th>Level</th>
-                                                                    <th>Assigned By</th>
-                                                                    <th>Assigned To</th>
-                                                                    <th>Approved By</th>
-                                                                    <th>Status</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="wf_details_tbody">
-                                                                {this.state.WFDetails && this.state.WFDetails.map((item, i) => {
-                                                                    return (
-                                                                        <>
-                                                                            <tr>
-                                                                                <td>{i + 1}</td>
-                                                                                <td>Section {item.Level}</td>
-                                                                                <td>{item.AssignedById != null ? item.AssignedBy.Title : "-"}</td>
-                                                                                <td>{item.AssignedToId != null ? item.AssignedTo.Title : "-"}</td>
-                                                                                <td>{item.ApprovedById != null ? item.ApprovedBy.Title : "-"}</td>
-                                                                                <td>{item.Status}</td>
-                                                                            </tr>
-                                                                        </>
-                                                                    )
-                                                                })}
-                                                            </tbody>
 
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
 
